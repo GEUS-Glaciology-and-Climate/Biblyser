@@ -1,7 +1,9 @@
-# File .readthedocs.yml
+# File .readthedocs.yaml
 
-conda:
-  file : docs/requirements.yaml
+build:
+  image: latest
 
 python:
   version: 3.7
+
+requirements_file: docs/requirements.txt
