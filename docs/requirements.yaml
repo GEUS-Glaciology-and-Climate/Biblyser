@@ -2,11 +2,11 @@ name: pybiblyser
 channels:
   - defaults
 dependencies: 
-  - numpy==1.20.3
-  - pandas==1.3.2
-  - pip==21.2.2
+  - numpy
+  - pandas
+  - pip
   - pip:
-    - gender-guesser==0.4.0
-    - habanero==0.7.4
-    - pybliometrics==3.0.1
-    - scholarly==1.4.1
+    - gender-guesser
+    - habanero
+    - pybliometrics
+    - scholarly
