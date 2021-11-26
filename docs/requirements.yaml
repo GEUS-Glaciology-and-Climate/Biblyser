@@ -1,6 +1,5 @@
 name: pybiblyser
 channels:
-  - conda-forge
   - defaults
 dependencies: 
   - numpy==1.20.3
@@ -11,4 +10,3 @@ dependencies:
     - habanero==0.7.4
     - pybliometrics==3.0.1
     - scholarly==1.4.1
-    - wos==0.2.5

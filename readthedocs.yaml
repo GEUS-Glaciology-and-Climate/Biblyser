@@ -1,13 +1,7 @@
-# .readthedocs.yml
+# File .readthedocs.yml
 
-build:
-  os: "ubuntu-20.04"
-  tools:
-    python: "3.7"    
-
-sphinx:
-  configuration: docs/source/conf.py
+conda:
+  file : docs/requirements.yaml
 
 python:
-  install:
-    - requirements: requirements.yaml
+  version: 3.7
