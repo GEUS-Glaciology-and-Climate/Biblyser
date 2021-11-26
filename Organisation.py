@@ -14,26 +14,35 @@ from Name import Name, getKeyValue
 #------------------------------------------------------------------------------    
 
 class Organisation(object):
-    '''The Organisation object holds a collection of Name objects, 
-    representing an institution or department'''
-    
+    """The Organisation object holds a collection of Name objects, 
+    representing an institution or department
+
+    Attributes
+    ----------    
+    names : list
+      List of Name objects
+    """
     def __init__(self, names, titles=None, genders=None, **kwargs):
-        '''Initialise organisation from list of names
+        """Initialise organisation from list of names
         
-        Variables
-        names (list)                List of str names or Name objects
-        titles (list)               List of str titles (default=None)
-        genders (list)              List of str genders (default=None)
-        **kwargs                    Keyword arguments (valid keywords: orcid, 
-                                    scholarid, scopusid, hindex_scopus, 
-                                    hindex_scholar, affiliation)        
-        '''
+        Parameters
+        ----------
+        names : list or str               
+          List of str names or Name objects
+        titles : list, optional
+          List of str titles
+        genders : list, optional
+          List of str genders
+        **kwargs : dict
+          Keyword arguments (valid keywords: orcid, cholarid, scopusid, 
+          hindex_scopus, hindex_scholar, affiliation)        
+        """
         print(f'Constructing Organisation from {type(names)}')
         if isinstance(names, list): 
             
             #Construction from list of Name objects
             if isinstance(names[0], Name):
-                self._names = names
+                self.names = names
                 
             #Construction from list containing name strings                
             elif isinstance(names[0], str) or isinstance(names[0], list): 
@@ -41,25 +50,25 @@ class Organisation(object):
                 for i in range(len(names)):
                     new_name = Name(names[i])
                     if titles != None:
-                        new_name._title = titles[i]
+                        new_name.title = titles[i]
                     if genders != None:
-                        new_name._gender = genders[i]
+                        new_name.gender = genders[i]
                         
                     try:
-                        new_name._orcid = getKeyValue(kwargs, 'orcid')[i]
-                        new_name._scopusid = getKeyValue(kwargs, 'scopusid')[i]
-                        new_name._hindex_scopus = getKeyValue(kwargs, 
+                        new_name.orcid = getKeyValue(kwargs, 'orcid')[i]
+                        new_name.scopusid = getKeyValue(kwargs, 'scopusid')[i]
+                        new_name.hindex_scopus = getKeyValue(kwargs, 
                                                               'hindex_scopus')[i]
-                        new_name._hindex_scholar = getKeyValue(kwargs, 
+                        new_name.hindex_scholar = getKeyValue(kwargs, 
                                                                'hindex_scholar')[i]
                     except:
-                        self._orcid = None
-                        self._scopusid = None
-                        self._hindex_scopus = None
-                        self._hindex_scholar = None
+                        self.orcid = None
+                        self.scopusid = None
+                        self.hindex_scopus = None
+                        self.hindex_scholar = None
                     new.append(new_name)
                     
-                self._names = new
+                self.names = new
                 
             #Else, print error
             else:               
@@ -68,35 +77,59 @@ class Organisation(object):
         
         #Construction from single name string
         elif isinstance(names, str):
-            self._names = Name(names, titles, genders, kwargs) 
+            self.names = Name(names, titles, genders, kwargs) 
 
         #Construction from single Name object
         elif isinstance(names, Name):
-            self._names = names
+            self.names = names
             
         #Else, print error
         else:
             raise TypeError('List should contain Name objects or str,' \
                             f' found {type(names[0])}')
         
-        print(f'Organisation defined with {len(self._names)} names')
+        print(f'Organisation defined with {len(self.names)} names')
 
     
     def getAllNames(self, all_formats=True):
-        '''Retrieve all names in Organisation'''
+        """Retrieve all names in Organisation
+        
+        Parameters
+        ----------
+        all_formats : bool, default True
+          Flag to signify if all name formats should be returned (True), or 
+          full names only (False)
+        
+        Returns
+        -------
+        all_names : list
+          List of all organisation names
+        """
         all_names=[]
-        for n in self._names:
+        for n in self.names:
             if all_formats == True:
                 all_names.append(n.getAllNameFormats())
             else:
-                all_names.append(n._fullname)
+                all_names.append(n.fullname)
         return all_names
     
     
     def checkOrgName(self, n):
-        '''Check if name is in Organisation'''
+        """Check if name is in Organisation
+        
+        Parameters
+        ----------
+        n : str
+          Name to check
+        
+        Returns
+        -------
+        check : str or None
+          Name string that input name matches with, or None if there is no 
+          match
+        """
         check=None
-        for name in self._names:
+        for name in self.names:
             if name.matchName(n):
                 check=name
         if check==None:
@@ -106,9 +139,17 @@ class Organisation(object):
         
         
     def populateOrg(self, scopus=True, scholar=True):
-        '''Populate Organisation with additional information gathered from 
-        Scopus and/or Scholar'''
-        for n in self._names:
+        """Populate Organisation with additional information gathered from 
+        Scopus and/or Scholar
+        
+        Parameters
+        ----------
+        scopus : bool, default True
+          Flag to denote if Scopus authors should be used to populate object
+        scholar : bool, default True
+          Flag to denote if Scholar authors should be used to populate object
+        """
+        for n in self.names:
             if scopus == True:
                 n.populateFromScopus()
             if scholar == True:
@@ -116,16 +157,21 @@ class Organisation(object):
             
     
     def addName(self, n, t=None, g=None, **kwargs):
-        '''Add name to Organisation
+        """Add name to Organisation
         
-        Variables
-        n (Name/str/list)           Name to add         
-        titles (list)               Title (default=None)
-        genders (list)              Gender (default=None)
-        **kwargs                    Keyword arguments (valid keywords: orcid, 
-                                    scholarid, scopusid, hindex_scopus, 
-                                    hindex_scholar, affiliation)         
-        '''
+        Parameters
+        ----------
+        n : Name or str or list           
+          Name to add, given as eiter a Name object, fullname string, or 
+          fullname list [firstname, middlename, lastname]
+        t : str, optional 
+          Title
+        g : str, optional
+          Gender 
+        **kwargs : dict
+          Keyword arguments (valid keywords: orcid, scholarid, scopusid, 
+          hindex_scopus, hindex_scholar, affiliation)         
+        """
         #If Name object given
         if isinstance(n, Name):
             new = n       
@@ -140,31 +186,38 @@ class Organisation(object):
                             'Expected str, list or Author object.') 
         
         #Append new author
-        self._names.append(new)
+        self.names.append(new)
                        
         
     def asDataFrame(self):
-        '''Export Organisation as dataframe'''
+        """Export Organisation as dataframe
+        
+        Returns
+        -------
+        df : pandas.DataFrame
+          Organisation attributes as dataframe
+        """
         df = pd.DataFrame()
-        for a in self._names:
-            df = df.append({'full_name': a._fullname,
-                            'title': a._title,
+        for a in self.names:
+            df = df.append({'full_name': a.fullname,
+                            'title': a.title,
                             'guessed_gender': a.getGender(),
-                            'orcid_id': a._orcid,
-                            'scholar_id': a._scholarid,
-                            'scopus_id': a._scopusid,
+                            'orcid_id': a.orcid,
+                            'scholar_id': a.scholarid,
+                            'scopus_id': a.scopusid,
                             'full_initials': a.getFullInitials(),
                             'single_initials': a.getSingleInitials(),
                             'partial_initials': a.getNameAndInitials(),
                             'only_first': a.getSingleName(),
-                            'h-index_scopus': a._hindex_scopus,
-                            'h-index_scholar': a._hindex_scholar},
+                            'h-index_scopus': a.hindex_scopus,
+                            'h-index_scholar': a.hindex_scholar},
                             ignore_index=True)           
         return df
     
     
     def checkNames(self): 
-        '''Checker and user editor for names and genders in Organisation'''  
+        """Checker and user editor for names and genders in Organisation
+        """
         #Begin loop
         r1='n'
         while True:
@@ -180,39 +233,39 @@ class Organisation(object):
                 #Identify name object to change
                 r2 = input (f'Which author is incorrect? [0-{len(df.index)-1}] ')
                 if 0 <= int(r2) <= len(df.index):
-                    a = self._names[int(r2)]
-                    print(f'\nAuthor {a._fullname} \nFirst name: {a._firstname}'\
-                          f'\nMiddle name: {a._middlename} '\
-                          f'\nSurname: {a._surname} \nGender: {a._gender}')
+                    a = self.names[int(r2)]
+                    print(f'\nAuthor {a.fullname} \nFirst name: {a.firstname}'\
+                          f'\nMiddle name: {a.middlename} '\
+                          f'\nSurname: {a.surname} \nGender: {a.gender}')
                     
                     #Prompt first name alteration
-                    first = input(f'First name {a._firstname} >> ')
+                    first = input(f'First name {a.firstname} >> ')
                     if first != '':
-                        a._firstname = str(first)
+                        a.firstname = str(first)
                         
                     #Prompt middle name alteration    
-                    middle = input(f'Middle names {a._middlename} ["none" ' \
+                    middle = input(f'Middle names {a.middlename} ["none" ' \
                                    'for no middle name] >> ')
                     if middle != '':
                         if middle == 'none':
-                            a._middlename = None
+                            a.middlename = None
                         else:    
-                            a._middlename = str(middle)
+                            a.middlename = str(middle)
                      
                     #Prompt surname alteration    
-                    surname = input(f'Surname {a._surname} >> ')
+                    surname = input(f'Surname {a.surname} >> ')
                     if surname != '':
-                        a._surname = str(surname)
+                        a.surname = str(surname)
                     
                     #Prompt gender alteration
-                    gender = input(f'Gender {a._gender} [m/f/nb] >> ')
+                    gender = input(f'Gender {a.gender} [m/f/nb] >> ')
                     if gender in ['f', 'm', 'nb']:
                         if gender == 'f':
-                            a._gender='female'
+                            a.gender='female'
                         elif gender == 'm':
-                            a._gender='male'
+                            a.gender='male'
                         else:
-                            a._gender='nb'
+                            a.gender='nb'
            
             #Exit if 'y'
             elif r1 in ['y']: 
@@ -222,12 +275,20 @@ class Organisation(object):
 #------------------------------------------------------------------------------    
        
 def lookupName(n, names):
-    '''Check if name is in list of names
+    """Check if name is in list of names
     
-    Variables
-    n (str)                         Name
-    names (list)                    List of names
-    '''
+    Parameters
+    ----------
+    n : str
+      Name to check
+    names : list
+      List of names to check in
+    
+    Returns
+    -------
+    bool
+      Flag denoting if name has been found in list (True) or not (False)
+    """
     if n in names:
         return True
     else:
@@ -235,25 +296,41 @@ def lookupName(n, names):
 
 
 def checkGender(name, organisation):
-    '''Check if name appears in Organisation and if so, return gender
-    '''
+    """Check if name appears in Organisation and if so, return gender
+    
+    Parameters
+    ----------
+    name : str
+      Name to check
+    organisation : Organisation
+      Organisation object to check if name and genderappears in
+    
+    Returns
+    -------
+    gender  : str or None
+      Gender of name, or None if name does not appear in Organisation object
+    """
     gender=None
-    for n in organisation._names:
+    for n in organisation.names:
         all_n = n.getAllNameFormats()
         if name in all_n:
-            gender = n._gender
+            gender = n.gender
     return gender
 
 
 def orgFromCSV(csv_file):
-    '''Import organisation from csv file
+    """Import organisation from csv file
     
-    Variables
-    csv_file (str)                  Filepath to csv organisation
+    Parameters
+    ----------
+    csv_file : str                  
+      Filepath to csv organisation
     
     Returns
-    org (Organisation)              Organisation object
-    '''
+    -------
+    org : Organisation
+      Organisation object
+    """
     #Setup gender database from file
     database = pd.read_csv(csv_file)
     n_db = list(database['full_name'])

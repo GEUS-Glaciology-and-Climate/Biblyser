@@ -17,27 +17,51 @@ from Name import Name, getKeyValue
 #------------------------------------------------------------------------------
 
 class Bib(object):
-    '''The Bib object holds all attributes associated with a publication, 
+    """The Bib object holds all attributes associated with a publication, 
     such as publication and journal information, citations and altmetrics. 
-    Each co-author is linked to the publication as a Name object'''
+    Each co-author is linked to the publication as a Name object
+    
+    Attributes
+    ----------
+    doi : str
+      DOI identification of publication
+    title : str
+      Publication title
+    authors : list
+      List of authors (given as Name objects)
+    date : datetime
+      Date of publication
+    ptype : str
+      Publication type
+    journal : str
+      Name of journal published in
+    citations : int
+      Number of citations
+    altmetrics : int
+      Altmetric score
+    genders : list
+      List of author genders
+    """
     
     def __init__(self, **kwargs):
-        '''Initialise publication object with an inputted variable
+        """Initialise publication object with an inputted variable
         
-        **kwargs                        Keyword arguments for input to Bib
-                                        object. Keywords include doi, title,
-                                        date, ptype, journal, citations,
-                                        altmetrics and genders'''
+        Parameters
+        ----------           
+        **kwargs : dict, optional                  
+          Keyword arguments for input to Bib object. Keywords include doi, 
+          title, date, ptype, journal, citations, altmetrics and genders
+        """
         
         #Take doi and/or title inputs
         if 'doi' in kwargs:
-            self._doi = kwargs.get('doi')
+            self.doi = kwargs.get('doi')
             
         if 'title' in kwargs:
-            self._title = kwargs.get('title')
+            self.title = kwargs.get('title')
 
         #Check Bib object has doi or title attributes
-        if self._doi is None and self._title is None:
+        if self.doi is None and self.title is None:
             TypeError('Bib object initialisation failed with inputs ' \
                       f'{kwargs}. Expected keywords doi and/or title')
         else:
@@ -49,64 +73,83 @@ class Bib(object):
                     authors=[]
                     for a in kwargs.get('authors'):
                         authors.append(Name(a))
-                    self._authors = authors  
+                    self.authors = authors  
                 else:
-                    self._authors = None
+                    self.authors = None
                 
             #Populate other attributes if given
-            self._date = getKeyValue(kwargs, 'date')
-            self._ptype = getKeyValue(kwargs, 'ptype')
-            self._journal = getKeyValue(kwargs, 'journal')
-            self._citations = getKeyValue(kwargs, 'citations')
-            self._altmetrics = getKeyValue(kwargs, 'altmetrics')
-            self._genders = getKeyValue(kwargs, 'genders')
+            self.date = getKeyValue(kwargs, 'date')
+            self.ptype = getKeyValue(kwargs, 'ptype')
+            self.journal = getKeyValue(kwargs, 'journal')
+            self.citations = getKeyValue(kwargs, 'citations')
+            self.altmetrics = getKeyValue(kwargs, 'altmetrics')
+            self.genders = getKeyValue(kwargs, 'genders')
              
         
     def getFirstAuthor(self):
-        '''Return first author'''
-        return self._authors[0]       
+        """Return first author"""
+        return self.authors[0]       
 
     
     def getLastAuthor(self):
-        '''Return last author'''
-        if len(self._authors) > 1:
-            return self._authors[-1]
+        """Return last author"""
+        if len(self.authors) > 1:
+            return self.authors[-1]
         else:
             return None
 
 
-    def checkBibDate(self, dt):
-        '''Return if bib was published after a given date'''
-        if self._date != None:
-            if self._date >= dt:
-                return True
-        else:
-            return False
-
-
     def getStrAuthors(self):
-        '''Return all author full names as a comma-delineated string'''
-        if self._authors != None:
+        """Return all author full names as a comma-delineated string"""
+        if self.authors != None:
             all_authors=[]
-            for a in self._authors:
+            for a in self.authors:
                 try:
-                    all_authors.append(a._originalname)
+                    all_authors.append(a.originalname)
                 except:
                     all_authors.append(a)
             return ', '.join(all_authors)
         else:
             return None
         
+        
+    def checkBibDate(self, dt):
+        """Return if bib was published after a given date
+        
+        Parameters
+        ----------
+        dt : datetime
+          Given date which bib publication date will be compared to
+         
+        Returns
+        -------
+        bool
+          Flag denoting if bib was published before (False) or after (True) 
+          given date
+        """        
+        if self.date != None:
+            if self.date >= dt:
+                return True
+        else:
+            return False
+        
     
     def getOrgAuthors(self, organisation):
-        '''Return Bib authors within organisation
+        """Return Bib authors within organisation
         
-        Variables 
-        organisation (Organisation)          Organisation object
-        '''
+        Parameters
+        ----------
+        organisation : Organisation         
+          Organisation object to compare Bib authors to
+        
+        Returns
+        -------
+        org_names : list
+          List of Bib authors that are within Organisation
+        """
         org_names=[]
-        if self._authors != None:
-            for a in self._authors:
+        if self.authors != None:
+            for a in self.authors:
                 all_a = a.getAllNameFormats()
                 for aa in all_a:
                     name = organisation.checkOrgName(aa)
@@ -119,11 +162,18 @@ class Bib(object):
 
 
     def getOrgGender(self, org_names):
-        '''Return genders of organisation authors
+        """Return genders of organisation authors
         
-        Variables 
-        org_names (list)                    Name objects within Organisation
-        '''
+        Parameters
+        ----------
+        org_names : list
+          Name objects within organisation
+        
+        Returns
+        -------
+        org_gender : list
+          List of organisation author genders
+        """
         org_gender=[]
         for on in org_names: 
             org_gender.append(on.getGender())
@@ -131,11 +181,19 @@ class Bib(object):
 
 
     def checkOrgFirstAuthor(self, organisation):
-        '''Return flag for if first author is within organisation
+        """Return flag for if first author is within organisation
         
-        Variables
-        organisation (Organisation)         Organisation object
-        '''
+        Parameters
+        ----------
+        organisation : Organisation       
+          Organisation object
+        
+        Returns
+        -------
+        out : bool
+          Flag denoting if first author is within organisation (True) or 
+          external to organisation (False)
+        """
         author = self.getFirstAuthor()
         out = False
         for a in author.getAllNameFormats():
@@ -146,11 +204,19 @@ class Bib(object):
 
 
     def checkOrgLastAuthor(self, organisation):
-        '''Return flag for if last author is within organisation
+        """Return flag for if last author is within organisation
                 
-        Variables
-        organisation (Organisation)         Organisation object
-        '''
+        Parameters
+        ----------
+        organisation : Organisation       
+          Organisation object
+        
+        Returns
+        -------
+        out : bool
+          Flag denoting if last author is within organisation (True) or 
+          external to organisation (False)
+        """
         last = self.getLastAuthor()
         if last:
             last_org = organisation.checkOrgName(last)   
@@ -160,16 +226,16 @@ class Bib(object):
 
         
     def retrieveDOIFromTitle(self):
-        '''Retrieve DOI using a CrossRef search of the Bib title, and append to 
-        Bib attributes'''
-        if self._title == None:
+        """Retrieve DOI using a CrossRef search of the Bib title, and append to 
+        Bib attributes"""
+        if self.title == None:
             print('Publication title not provided. Cannot populate Bib object')
             pass
         else:
             
             #Conduct CrossRef search based on title
             cr = Crossref()   
-            clean_title = self._title.lower()
+            clean_title = self.title.lower()
             if '…' in clean_title:
                 clean_title = clean_title[:-1]
             search = cr.works(query_title = clean_title, select='title,DOI')
@@ -184,48 +250,70 @@ class Bib(object):
                     
             #Assign DOI based on search hit
             if info != None:
-                self._doi = info[0]
+                self.doi = info[0]
                  
                     
     def retrieveFromAMetric(self): 
-        if self._altmetrics == None:
+        """get Altmetrics of Bib object. If Altmetrics are not already a Bib
+        attribute, Altmetrics will be retrieved using a DOI search from the 
+        Altmetrics API
+        
+        Returns
+        -------
+        int
+          Altmetric score
+        """
+        if self.altmetrics == None:
             try:
-                altmet = fetchAltmetrics(self._doi)
-                self._altmetrics = getKeyValue(altmet, 'score')
+                altmet = fetchAltmetrics(self.doi)
+                self.altmetrics = getKeyValue(altmet, 'score')
                 # getKeyValue(altmet, 'title')
                 # getKeyValue(altmet, 'authors')
                 # getKeyValue(altmet, 'journal')
                 # getKeyValue(altmet, 'type')
                 # getKeyValue(altmet, 'published_on')
             except:
-                self._altmetrics = None
-        return self._altmetrics
+                self.altmetrics = None
+        return self.altmetrics
             
                             
     def populateBib(self, search):
-        '''Populate Bib attributes from search hit'''
-        self._doi = search[0]
-        self._title = search[1]
-        self._authors = search[2]
-        self._journal = search[3]
-        self._ptype = search[4]
-        self._date = search[5]
-        self._citations = search[6] 
+        """Populate Bib attributes from search hit
+        
+        Parameters
+        ----------
+        search : list
+          List of bib information to populate Bib object with [doi, title,
+          authors, journal, ptype, date, citations]
+        """
+        self.doi = search[0]
+        self.title = search[1]
+        self.authors = search[2]
+        self.journal = search[3]
+        self.ptype = search[4]
+        self.date = search[5]
+        self.citations = search[6] 
     
     
 #------------------------------------------------------------------------------         
 
 def countGenders(genders):
-    '''Count genders in list
+    """Count genders in list
     
-    Variables
-    genders (list)                          Gender list to count from
+    Parameters
+    ----------
+    genders : list 
+      Gender list to count from
     
-    Return
-    female (int)                            Female count
-    male (int)                              Male count
-    nb (int)                                Non-binary count
-    '''
+    Returns
+    -------
+    female : int
+      Female count
+    male : int 
+      Male count
+    nb : int   
+      Non-binary count
+    """
     female = genders.count('female')
     male = genders.count('male')
     nb = genders.count('non-binary')
@@ -233,15 +321,20 @@ def countGenders(genders):
 
 
 def checkBibAuthors(authors, organisation_names):
-    '''Check if author name/s appear in organisation names
+    """Check if author name/s appear in organisation names
     
-    Variables
-    authors (list)                          List of str author names
-    organisation_names (list)               List of str organisation names
+    Parameters
+    ----------
+    authors : list     
+      List of str author names
+    organisation_names : list 
+      List of str organisation names
     
-    Return
-    check (bool)                            Flag denoting if names are found
-    '''
+    Returns
+    -------
+    check (bool)                            
+      Flag denoting if name/s are found
+    """
     check=False
     for a in authors:
         if a in organisation_names:
@@ -250,11 +343,18 @@ def checkBibAuthors(authors, organisation_names):
 
 
 def listToStr(in_list):
-    '''Return string with comma separation from list
+    """Return string with comma separation from list
     
-    Variables 
-    in_list (list)                          List to merge and comma delineate
-    '''
+    Parameters
+    ----------
+    in_list : list                          
+      List to merge and comma delineate
+    
+    Returns
+    -------
+    str or None
+      Comma delineated string or None if input is invalid
+    """
     if len(in_list) > 1:
         return ', '.join(in_list)
     elif len(in_list) == 1:
@@ -264,17 +364,19 @@ def listToStr(in_list):
         
 
 def fromCrossRef(author):
-    '''Get bib records using CrossRef based on inputted sauthor search
+    """Get bib records using CrossRef based on inputted sauthor search
     
-    Variables
-    author (str)                            Author name
+    Parameters
+    ----------
+    author : str
+      Author name
     
     Returns
-    out (list)                              List containing search hit 
-                                            information [doi, title, authors, 
-                                            journal name, publication type, 
-                                            date, citation count]
-    '''   
+    -------
+    out : list
+      List containing search hit information [doi, title, authors, journal 
+      name, publication type, date, citation count]
+    """  
     #Initialise crossref and search
     out=[]
     a = author.lower()
@@ -300,16 +402,19 @@ def fromCrossRef(author):
 
 
 def extractFromCRitem(item):
-    '''Get bib information from CrossRef search item
+    """Get bib information from CrossRef search item
     
-    Variables
-    item (dict)                 CrossRef search hit
+    Parameters
+    ----------
+    item : dict
+      CrossRef search hit
     
     Returns
-    out (list)                  List containing doi, title, authors, journal 
-                                name, publication type, date, citation count             
-    '''
-    
+    -------
+    list
+      List containing doi, title, authors, journal name, publication type, 
+      date, citation count             
+    """ 
     #Get doi
     doi = getKeyValue(item, 'DOI')
     
@@ -354,29 +459,35 @@ def extractFromCRitem(item):
 
 
 def fromScopus(scopus_author):
-    '''Fetch all publications associated with Scopus author
+    """Fetch all publications associated with Scopus author
     
-    Variables
-    scopus_author (AuthorRetrieval) Scopus author retrieval object
-                                    (scopus.author_retrieval.AuthorRetrieval)
+    Parameters
+    ----------
+    scopus_author : AuthorRetrieval 
+      Scopus author retrieval object (scopus.author_retrieval.AuthorRetrieval)
     
     Returns
-    bibs (list)                     List of Scopus search publications  
-                                    (scopus.scopus_search.Document)
-    '''
+    -------
+    bibs : list
+      List of Scopus search publications (scopus.scopus_search.Document)
+    """
     bibs = scopus_author.get_documents()   
     return bibs
 
     
 def fromScholar(scholar_author):
-    '''Fetch all publications associated with Scopus author
+    """Fetch all publications associated with Scopus author
     
-    Variables
-    scholar_author (dict)           Scholar author dictionary
+    Parameters
+    ----------
+    scholar_author : dict           
+      Scholar author dictionary
     
     Returns
-    bibs (list)                     List of Scholar bibs
-    ''' 
+    -------
+    bibs : list
+      List of Scholar bibs
+    """
     bibs = []
     
     #Get all publications
@@ -407,15 +518,20 @@ def fromScholar(scholar_author):
 
 
 def extractScholarItem(pub, item):
-    '''Extract item from Scholar bib object
+    """Extract item from Scholar bib object
     
-    Variables
-    pub (dict)                          Scholar bib object
-    item (str)                          Keyword to obtain value from
+    Parameters
+    ----------
+    pub : dict                          
+      Scholar bib dictionary
+    item : str                          
+      Keyword to obtain value from
     
-    Return
-    out (str/int)                       Keyword value
-    '''
+    Returns
+    -------
+    out : str or int
+      Keyword value
+    """
     try:
         out = pub['bib'][item]
     except:
@@ -424,13 +540,18 @@ def extractScholarItem(pub, item):
 
 
 def fetchAltmetrics(doi):
-    '''Fetch altmetrics from DOI
+    """Fetch altmetrics from DOI
     
-    Variables
-    doi (str)                           DOI string to search with
+    Parameters
+    ----------
+    doi : str                           
+      DOI string to search with
     
-    Return
-    result (dict)                       Altmetrics result'''
+    Returns
+    -------
+    result : dict
+      Altmetrics result
+    """
     api = 'https://api.altmetric.com/v1/doi/'
     response = requests.get(api + doi)
     if response.status_code == 200:

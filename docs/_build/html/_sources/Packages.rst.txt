@@ -1,0 +1,37 @@
+PyBiblyser Modules
+==================
+
+Name module
+-----------
+
+.. automodule:: Name
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Organisation module
+-------------------
+
+.. automodule:: Organisation
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Bib module
+----------
+
+.. automodule:: Bib
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+BibCollection module
+--------------------
+
+.. automodule:: BibCollection
+   :members:
+   :undoc-members:
+   :show-inheritance:
