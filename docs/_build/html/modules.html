@@ -43,10 +43,10 @@
 <li class="toctree-l1"><a class="reference internal" href="guide.html">Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="diversityindex.html">Diversity Index</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Modules</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#name">Name</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#organisation">Organisation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#bib">Bib</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#bibcollection">BibCollection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-Name">Name</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-Organisation">Organisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-Bib">Bib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-BibCollection">BibCollection</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgements</a></li>
@@ -78,17 +78,999 @@
              
   <section id="modules">
 <h1>Modules<a class="headerlink" href="#modules" title="Permalink to this headline"></a></h1>
-<section id="name">
-<h2>Name<a class="headerlink" href="#name" title="Permalink to this headline"></a></h2>
+<section id="module-Name">
+<span id="name"></span><h2>Name<a class="headerlink" href="#module-Name" title="Permalink to this headline"></a></h2>
+<p>PyBiblyser (c) is a bibliometric workflow for evaluating the bib metrics of an
+individual or a group of people (an organisation).</p>
+<p>PyBiblyser is licensed under a MIT License.</p>
+<p>You should have received a copy of the license along with this work. If not,
+see &lt;<a class="reference external" href="https://choosealicense.com/licenses/mit/">https://choosealicense.com/licenses/mit/</a>&gt;.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="Name.Name">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">Name.</span></span><span class="sig-name descname"><span class="pre">Name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gender</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Name.Name" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The Name object holds all information related to an author of a
+publication, such as full name, title, gender, affiliation, and
+identifications for bib databases such as Scopus and Google Scholar</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fullname</strong> (<em>str</em>) – Full name</p></li>
+<li><p><strong>firstname</strong> (<em>str</em>) – First name</p></li>
+<li><p><strong>middlename</strong> (<em>str</em>) – Middle name</p></li>
+<li><p><strong>surname</strong> (<em>str</em>) – Last name</p></li>
+<li><p><strong>originalname</strong> (<em>str</em>) – Original inputted name to object</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – Title associated with name (e.g. researcher, technician)</p></li>
+<li><p><strong>gender</strong> (<em>str</em>) – Gender associated with name (female, male, or non-binary)</p></li>
+<li><p><strong>orcid</strong> (<em>str</em>) – ORCID identification</p></li>
+<li><p><strong>hindex_scopus</strong> (<em>int</em>) – H-index from Scopus</p></li>
+<li><p><strong>hindex_scholar</strong> (<em>int</em>) – H-index from Scholar</p></li>
+<li><p><strong>scopusid</strong> (<em>str</em>) – Scopus author identification</p></li>
+<li><p><strong>scholarid</strong> (<em>str</em>) – Scholar author idenitification</p></li>
+<li><p><strong>affiliation</strong> (<em>str</em>) – Affiliation institute or university</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="Name.Name.getAllNameFormats">
+<span class="sig-name descname"><span class="pre">getAllNameFormats</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Name.Name.getAllNameFormats" title="Permalink to this definition"></a></dt>
+<dd><p>Return all name formats - fullname, all initials, single initials,
+and name and middle name initials</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>All versions of name [full name, all initials, single initials,
+first name and initials]</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Name.Name.getFullInitials">
+<span class="sig-name descname"><span class="pre">getFullInitials</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Name.Name.getFullInitials" title="Permalink to this definition"></a></dt>
+<dd><p>Get name with all initials formatting e.g. “Jane Emily Doe” &gt;&gt;
+“J. E. Doe”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Full initials version of name</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Name.Name.getGender">
+<span class="sig-name descname"><span class="pre">getGender</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Name.Name.getGender" title="Permalink to this definition"></a></dt>
+<dd><p>Return gender attribute. If not given, guess gender based on first
+name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Gender attribute of object</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Name.Name.getNameAndInitials">
+<span class="sig-name descname"><span class="pre">getNameAndInitials</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Name.Name.getNameAndInitials" title="Permalink to this definition"></a></dt>
+<dd><p>Get full first name and initialled middle names formatting e.g.
+“Jane Emily Doe” &gt;&gt; “Jane E. Doe”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>First name and initials version of name</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Name.Name.getSingleInitials">
+<span class="sig-name descname"><span class="pre">getSingleInitials</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Name.Name.getSingleInitials" title="Permalink to this definition"></a></dt>
+<dd><p>Get name with single initials formatting e.g. “Jane Emily Doe” &gt;&gt;
+“J. Doe”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Single initials version of name</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Name.Name.getSingleName">
+<span class="sig-name descname"><span class="pre">getSingleName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Name.Name.getSingleName" title="Permalink to this definition"></a></dt>
+<dd><p>Get name with single first name formatting e.g. “Jane Emily Doe” &gt;&gt;
+“Jane Doe”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Single firt name version of name</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Name.Name.getTitle">
+<span class="sig-name descname"><span class="pre">getTitle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Name.Name.getTitle" title="Permalink to this definition"></a></dt>
+<dd><p>Return title associated with name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Title attribute of object</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Name.Name.matchName">
+<span class="sig-name descname"><span class="pre">matchName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Name.Name.matchName" title="Permalink to this definition"></a></dt>
+<dd><p>Check if name matches formatted names, with a boolean output</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>str</em>) – Name to match with</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Flag denoting whether name matches (True) or not (False)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Name.Name.populateFromScholar">
+<span class="sig-name descname"><span class="pre">populateFromScholar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Name.Name.populateFromScholar" title="Permalink to this definition"></a></dt>
+<dd><p>Populate Name attributes using Scholar search</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Name.Name.populateFromScopus">
+<span class="sig-name descname"><span class="pre">populateFromScopus</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Name.Name.populateFromScopus" title="Permalink to this definition"></a></dt>
+<dd><p>Populate Name attributes using Scopus AuthorSearch</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Name.defineGender">
+<span class="sig-prename descclassname"><span class="pre">Name.</span></span><span class="sig-name descname"><span class="pre">defineGender</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fullname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Name.defineGender" title="Permalink to this definition"></a></dt>
+<dd><p>User-define gender of fullname with prompted input</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fullname</strong> (<em>str</em>) – Full name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>gname</strong> – “male”/”female”/”non-binary”</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Name.fetchScholarAuthor">
+<span class="sig-prename descclassname"><span class="pre">Name.</span></span><span class="sig-name descname"><span class="pre">fetchScholarAuthor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">firstname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lastname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Name.fetchScholarAuthor" title="Permalink to this definition"></a></dt>
+<dd><p>Fetch Scholar author object using name search with Google Scholar API</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>firstname</strong> (<em>str</em>) – First (and middle) name string</p></li>
+<li><p><strong>lastname</strong> (<em>str</em>) – Last name string</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>scholar_author</strong> – Google Scholar author attributes</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Name.fetchScopusAuthor">
+<span class="sig-prename descclassname"><span class="pre">Name.</span></span><span class="sig-name descname"><span class="pre">fetchScopusAuthor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">firstname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lastname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Name.fetchScopusAuthor" title="Permalink to this definition"></a></dt>
+<dd><p>Fetch Scopus author object using name search with Scopus API</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>firstname</strong> (<em>str</em>) – First (and middle) name string</p></li>
+<li><p><strong>lastname</strong> (<em>str</em>) – Last name string</p></li>
+<li><p><strong>Returns</strong> – </p></li>
+<li><p><strong>scopus_author</strong> (<em>AuthorRetrieval</em>) – Scopus author retrieval object (scopus.author_retrieval.AuthorRetrieval)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Name.getInitial">
+<span class="sig-prename descclassname"><span class="pre">Name.</span></span><span class="sig-name descname"><span class="pre">getInitial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Name.getInitial" title="Permalink to this definition"></a></dt>
+<dd><p>Get initial from name e.g. “Jane” &gt;&gt; “J. “</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – Name to retrieve initial from</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Initialised name</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Name.getKeyValue">
+<span class="sig-prename descclassname"><span class="pre">Name.</span></span><span class="sig-name descname"><span class="pre">getKeyValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kwarg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Name.getKeyValue" title="Permalink to this definition"></a></dt>
+<dd><p>Return key value from dictionary if present</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>kwarg</strong> (<em>dict</em>) – Dict object to find key from</p></li>
+<li><p><strong>key</strong> (<em>str</em>) – Key to retrieve value from</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Keyword value, None if key is invalid</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str or int or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Name.guessGender">
+<span class="sig-prename descclassname"><span class="pre">Name.</span></span><span class="sig-name descname"><span class="pre">guessGender</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">guesser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fullname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Name.guessGender" title="Permalink to this definition"></a></dt>
+<dd><p>Guess gender from name using the gender_guesser package</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>guesser</strong> (<em>detector.Detector</em>) – Gender guesser object</p></li>
+<li><p><strong>fullname</strong> (<em>str</em>) – Full name</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>gname</strong> – Guessed gender of name</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Name.splitFullName">
+<span class="sig-prename descclassname"><span class="pre">Name.</span></span><span class="sig-name descname"><span class="pre">splitFullName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fullname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Name.splitFullName" title="Permalink to this definition"></a></dt>
+<dd><p>Split full name into first, middle and last name e.g. “Jane Emily Doe”
+&gt;&gt; [“Jane”, “Emily”, “Doe”]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fullname</strong> (<em>str</em>) – Full name string</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>first</strong> (<em>str</em>) – First name string</p></li>
+<li><p><strong>middle</strong> (<em>str</em>) – Middle name string</p></li>
+<li><p><strong>last</strong> (<em>str</em>) – Last name string</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
-<section id="organisation">
-<h2>Organisation<a class="headerlink" href="#organisation" title="Permalink to this headline"></a></h2>
+<section id="module-Organisation">
+<span id="organisation"></span><h2>Organisation<a class="headerlink" href="#module-Organisation" title="Permalink to this headline"></a></h2>
+<p>PyBiblyser (c) is a bibliometric workflow for evaluating the bib metrics of an
+individual or a group of people (an organisation).</p>
+<p>PyBiblyser is licensed under a MIT License.</p>
+<p>You should have received a copy of the license along with this work. If not,
+see &lt;<a class="reference external" href="https://choosealicense.com/licenses/mit/">https://choosealicense.com/licenses/mit/</a>&gt;.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="Organisation.Organisation">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">Organisation.</span></span><span class="sig-name descname"><span class="pre">Organisation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">titles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">genders</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Organisation.Organisation" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The Organisation object holds a collection of Name objects,
+representing an institution or department</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><p><strong>names</strong> (<em>list</em>) – List of Name objects</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="Organisation.Organisation.addName">
+<span class="sig-name descname"><span class="pre">addName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Organisation.Organisation.addName" title="Permalink to this definition"></a></dt>
+<dd><p>Add name to Organisation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<a class="reference internal" href="#Name.Name" title="Name.Name"><em>Name</em></a><em> or </em><em>str</em><em> or </em><em>list</em>) – Name to add, given as eiter a Name object, fullname string, or
+fullname list [firstname, middlename, lastname]</p></li>
+<li><p><strong>t</strong> (<em>str</em><em>, </em><em>optional</em>) – Title</p></li>
+<li><p><strong>g</strong> (<em>str</em><em>, </em><em>optional</em>) – Gender</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Keyword arguments (valid keywords: orcid, scholarid, scopusid,
+hindex_scopus, hindex_scholar, affiliation)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Organisation.Organisation.asDataFrame">
+<span class="sig-name descname"><span class="pre">asDataFrame</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Organisation.Organisation.asDataFrame" title="Permalink to this definition"></a></dt>
+<dd><p>Export Organisation as dataframe</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>df</strong> – Organisation attributes as dataframe</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Organisation.Organisation.checkNames">
+<span class="sig-name descname"><span class="pre">checkNames</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Organisation.Organisation.checkNames" title="Permalink to this definition"></a></dt>
+<dd><p>Checker and user editor for names and genders in Organisation</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Organisation.Organisation.checkOrgName">
+<span class="sig-name descname"><span class="pre">checkOrgName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Organisation.Organisation.checkOrgName" title="Permalink to this definition"></a></dt>
+<dd><p>Check if name is in Organisation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>str</em>) – Name to check</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>check</strong> – Name string that input name matches with, or None if there is no
+match</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Organisation.Organisation.getAllNames">
+<span class="sig-name descname"><span class="pre">getAllNames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_formats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Organisation.Organisation.getAllNames" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve all names in Organisation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>all_formats</strong> (<em>bool</em><em>, </em><em>default True</em>) – Flag to signify if all name formats should be returned (True), or
+full names only (False)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>all_names</strong> – List of all organisation names</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Organisation.Organisation.populateOrg">
+<span class="sig-name descname"><span class="pre">populateOrg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scopus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scholar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Organisation.Organisation.populateOrg" title="Permalink to this definition"></a></dt>
+<dd><p>Populate Organisation with additional information gathered from
+Scopus and/or Scholar</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scopus</strong> (<em>bool</em><em>, </em><em>default True</em>) – Flag to denote if Scopus authors should be used to populate object</p></li>
+<li><p><strong>scholar</strong> (<em>bool</em><em>, </em><em>default True</em>) – Flag to denote if Scholar authors should be used to populate object</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Organisation.checkGender">
+<span class="sig-prename descclassname"><span class="pre">Organisation.</span></span><span class="sig-name descname"><span class="pre">checkGender</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organisation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Organisation.checkGender" title="Permalink to this definition"></a></dt>
+<dd><p>Check if name appears in Organisation and if so, return gender</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Name to check</p></li>
+<li><p><strong>organisation</strong> (<a class="reference internal" href="#Organisation.Organisation" title="Organisation.Organisation"><em>Organisation</em></a>) – Organisation object to check if name and genderappears in</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>gender</strong> – Gender of name, or None if name does not appear in Organisation object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Organisation.lookupName">
+<span class="sig-prename descclassname"><span class="pre">Organisation.</span></span><span class="sig-name descname"><span class="pre">lookupName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Organisation.lookupName" title="Permalink to this definition"></a></dt>
+<dd><p>Check if name is in list of names</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>str</em>) – Name to check</p></li>
+<li><p><strong>names</strong> (<em>list</em>) – List of names to check in</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Flag denoting if name has been found in list (True) or not (False)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Organisation.orgFromCSV">
+<span class="sig-prename descclassname"><span class="pre">Organisation.</span></span><span class="sig-name descname"><span class="pre">orgFromCSV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csv_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Organisation.orgFromCSV" title="Permalink to this definition"></a></dt>
+<dd><p>Import organisation from csv file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>csv_file</strong> (<em>str</em>) – Filepath to csv organisation</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>org</strong> – Organisation object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#Organisation.Organisation" title="Organisation.Organisation">Organisation</a></p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
-<section id="bib">
-<h2>Bib<a class="headerlink" href="#bib" title="Permalink to this headline"></a></h2>
+<section id="module-Bib">
+<span id="bib"></span><h2>Bib<a class="headerlink" href="#module-Bib" title="Permalink to this headline"></a></h2>
+<p>PyBiblyser (c) is a bibliometric workflow for evaluating the bib metrics of an
+individual or a group of people (an organisation).</p>
+<p>PyBiblyser is licensed under a MIT License.</p>
+<p>You should have received a copy of the license along with this work. If not,
+see &lt;<a class="reference external" href="https://choosealicense.com/licenses/mit/">https://choosealicense.com/licenses/mit/</a>&gt;.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="Bib.Bib">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">Bib.</span></span><span class="sig-name descname"><span class="pre">Bib</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bib.Bib" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The Bib object holds all attributes associated with a publication,
+such as publication and journal information, citations and altmetrics.
+Each co-author is linked to the publication as a Name object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>doi</strong> (<em>str</em>) – DOI identification of publication</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – Publication title</p></li>
+<li><p><strong>authors</strong> (<em>list</em>) – List of authors (given as Name objects)</p></li>
+<li><p><strong>date</strong> (<em>datetime</em>) – Date of publication</p></li>
+<li><p><strong>ptype</strong> (<em>str</em>) – Publication type</p></li>
+<li><p><strong>journal</strong> (<em>str</em>) – Name of journal published in</p></li>
+<li><p><strong>citations</strong> (<em>int</em>) – Number of citations</p></li>
+<li><p><strong>altmetrics</strong> (<em>int</em>) – Altmetric score</p></li>
+<li><p><strong>genders</strong> (<em>list</em>) – List of author genders</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bib.Bib.checkBibDate">
+<span class="sig-name descname"><span class="pre">checkBibDate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bib.Bib.checkBibDate" title="Permalink to this definition"></a></dt>
+<dd><p>Return if bib was published after a given date</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dt</strong> (<em>datetime</em>) – Given date which bib publication date will be compared to</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Flag denoting if bib was published before (False) or after (True)
+given date</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bib.Bib.checkOrgFirstAuthor">
+<span class="sig-name descname"><span class="pre">checkOrgFirstAuthor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">organisation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bib.Bib.checkOrgFirstAuthor" title="Permalink to this definition"></a></dt>
+<dd><p>Return flag for if first author is within organisation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>organisation</strong> (<a class="reference internal" href="#Organisation.Organisation" title="Organisation.Organisation"><em>Organisation</em></a>) – Organisation object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>out</strong> – Flag denoting if first author is within organisation (True) or
+external to organisation (False)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bib.Bib.checkOrgLastAuthor">
+<span class="sig-name descname"><span class="pre">checkOrgLastAuthor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">organisation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bib.Bib.checkOrgLastAuthor" title="Permalink to this definition"></a></dt>
+<dd><p>Return flag for if last author is within organisation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>organisation</strong> (<a class="reference internal" href="#Organisation.Organisation" title="Organisation.Organisation"><em>Organisation</em></a>) – Organisation object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>out</strong> – Flag denoting if last author is within organisation (True) or
+external to organisation (False)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bib.Bib.getFirstAuthor">
+<span class="sig-name descname"><span class="pre">getFirstAuthor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bib.Bib.getFirstAuthor" title="Permalink to this definition"></a></dt>
+<dd><p>Return first author</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bib.Bib.getLastAuthor">
+<span class="sig-name descname"><span class="pre">getLastAuthor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bib.Bib.getLastAuthor" title="Permalink to this definition"></a></dt>
+<dd><p>Return last author</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bib.Bib.getOrgAuthors">
+<span class="sig-name descname"><span class="pre">getOrgAuthors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">organisation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bib.Bib.getOrgAuthors" title="Permalink to this definition"></a></dt>
+<dd><p>Return Bib authors within organisation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>organisation</strong> (<a class="reference internal" href="#Organisation.Organisation" title="Organisation.Organisation"><em>Organisation</em></a>) – Organisation object to compare Bib authors to</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>org_names</strong> – List of Bib authors that are within Organisation</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bib.Bib.getOrgGender">
+<span class="sig-name descname"><span class="pre">getOrgGender</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">org_names</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bib.Bib.getOrgGender" title="Permalink to this definition"></a></dt>
+<dd><p>Return genders of organisation authors</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>org_names</strong> (<em>list</em>) – Name objects within organisation</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>org_gender</strong> – List of organisation author genders</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bib.Bib.getStrAuthors">
+<span class="sig-name descname"><span class="pre">getStrAuthors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bib.Bib.getStrAuthors" title="Permalink to this definition"></a></dt>
+<dd><p>Return all author full names as a comma-delineated string</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bib.Bib.populateBib">
+<span class="sig-name descname"><span class="pre">populateBib</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bib.Bib.populateBib" title="Permalink to this definition"></a></dt>
+<dd><p>Populate Bib attributes from search hit</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>search</strong> (<em>list</em>) – List of bib information to populate Bib object with [doi, title,
+authors, journal, ptype, date, citations]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bib.Bib.retrieveDOIFromTitle">
+<span class="sig-name descname"><span class="pre">retrieveDOIFromTitle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bib.Bib.retrieveDOIFromTitle" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve DOI using a CrossRef search of the Bib title, and append to
+Bib attributes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bib.Bib.retrieveFromAMetric">
+<span class="sig-name descname"><span class="pre">retrieveFromAMetric</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bib.Bib.retrieveFromAMetric" title="Permalink to this definition"></a></dt>
+<dd><p>get Altmetrics of Bib object. If Altmetrics are not already a Bib
+attribute, Altmetrics will be retrieved using a DOI search from the
+Altmetrics API</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Altmetric score</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bib.checkBibAuthors">
+<span class="sig-prename descclassname"><span class="pre">Bib.</span></span><span class="sig-name descname"><span class="pre">checkBibAuthors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">authors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organisation_names</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bib.checkBibAuthors" title="Permalink to this definition"></a></dt>
+<dd><p>Check if author name/s appear in organisation names</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>authors</strong> (<em>list</em>) – List of str author names</p></li>
+<li><p><strong>organisation_names</strong> (<em>list</em>) – List of str organisation names</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Flag denoting if name/s are found</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>check (bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bib.countGenders">
+<span class="sig-prename descclassname"><span class="pre">Bib.</span></span><span class="sig-name descname"><span class="pre">countGenders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">genders</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bib.countGenders" title="Permalink to this definition"></a></dt>
+<dd><p>Count genders in list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>genders</strong> (<em>list</em>) – Gender list to count from</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>female</strong> (<em>int</em>) – Female count</p></li>
+<li><p><strong>male</strong> (<em>int</em>) – Male count</p></li>
+<li><p><strong>nb</strong> (<em>int</em>) – Non-binary count</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bib.extractFromCRitem">
+<span class="sig-prename descclassname"><span class="pre">Bib.</span></span><span class="sig-name descname"><span class="pre">extractFromCRitem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bib.extractFromCRitem" title="Permalink to this definition"></a></dt>
+<dd><p>Get bib information from CrossRef search item</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>item</strong> (<em>dict</em>) – CrossRef search hit</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List containing doi, title, authors, journal name, publication type,
+date, citation count</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bib.extractScholarItem">
+<span class="sig-prename descclassname"><span class="pre">Bib.</span></span><span class="sig-name descname"><span class="pre">extractScholarItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bib.extractScholarItem" title="Permalink to this definition"></a></dt>
+<dd><p>Extract item from Scholar bib object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pub</strong> (<em>dict</em>) – Scholar bib dictionary</p></li>
+<li><p><strong>item</strong> (<em>str</em>) – Keyword to obtain value from</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>out</strong> – Keyword value</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str or int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bib.fetchAltmetrics">
+<span class="sig-prename descclassname"><span class="pre">Bib.</span></span><span class="sig-name descname"><span class="pre">fetchAltmetrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doi</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bib.fetchAltmetrics" title="Permalink to this definition"></a></dt>
+<dd><p>Fetch altmetrics from DOI</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>doi</strong> (<em>str</em>) – DOI string to search with</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>result</strong> – Altmetrics result</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bib.fromCrossRef">
+<span class="sig-prename descclassname"><span class="pre">Bib.</span></span><span class="sig-name descname"><span class="pre">fromCrossRef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">author</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bib.fromCrossRef" title="Permalink to this definition"></a></dt>
+<dd><p>Get bib records using CrossRef based on inputted sauthor search</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>author</strong> (<em>str</em>) – Author name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>out</strong> – List containing search hit information [doi, title, authors, journal
+name, publication type, date, citation count]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bib.fromScholar">
+<span class="sig-prename descclassname"><span class="pre">Bib.</span></span><span class="sig-name descname"><span class="pre">fromScholar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scholar_author</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bib.fromScholar" title="Permalink to this definition"></a></dt>
+<dd><p>Fetch all publications associated with Scopus author</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scholar_author</strong> (<em>dict</em>) – Scholar author dictionary</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>bibs</strong> – List of Scholar bibs</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bib.fromScopus">
+<span class="sig-prename descclassname"><span class="pre">Bib.</span></span><span class="sig-name descname"><span class="pre">fromScopus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scopus_author</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bib.fromScopus" title="Permalink to this definition"></a></dt>
+<dd><p>Fetch all publications associated with Scopus author</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scopus_author</strong> (<em>AuthorRetrieval</em>) – Scopus author retrieval object (scopus.author_retrieval.AuthorRetrieval)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>bibs</strong> – List of Scopus search publications (scopus.scopus_search.Document)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bib.listToStr">
+<span class="sig-prename descclassname"><span class="pre">Bib.</span></span><span class="sig-name descname"><span class="pre">listToStr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bib.listToStr" title="Permalink to this definition"></a></dt>
+<dd><p>Return string with comma separation from list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>in_list</strong> (<em>list</em>) – List to merge and comma delineate</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Comma delineated string or None if input is invalid</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str or None</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
-<section id="bibcollection">
-<h2>BibCollection<a class="headerlink" href="#bibcollection" title="Permalink to this headline"></a></h2>
+<section id="module-BibCollection">
+<span id="bibcollection"></span><h2>BibCollection<a class="headerlink" href="#module-BibCollection" title="Permalink to this headline"></a></h2>
+<p>PyBiblyser (c) is a bibliometric workflow for evaluating the bib metrics of an
+individual or a group of people (an organisation).</p>
+<p>PyBiblyser is licensed under a MIT License.</p>
+<p>You should have received a copy of the license along with this work. If not,
+see &lt;<a class="reference external" href="https://choosealicense.com/licenses/mit/">https://choosealicense.com/licenses/mit/</a>&gt;.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="BibCollection.BibCollection">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">BibCollection.</span></span><span class="sig-name descname"><span class="pre">BibCollection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BibCollection.BibCollection" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A collection of Bib objects, representing a database of publications</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>organisation</strong> (<a class="reference internal" href="#Organisation.Organisation" title="Organisation.Organisation"><em>Organisation</em></a>) – Organisation object associated with BibCollection</p></li>
+<li><p><strong>bibs</strong> (<em>list</em>) – List of Bib objects</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="BibCollection.BibCollection.addBibs">
+<span class="sig-name descname"><span class="pre">addBibs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bibs_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BibCollection.BibCollection.addBibs" title="Permalink to this definition"></a></dt>
+<dd><p>Add list of Bib objects to BibCollection object</p>
+<dl class="simple">
+<dt>bibs_list<span class="classifier">list</span></dt><dd><p>List of Bib objects to add to BibCollection object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BibCollection.BibCollection.addOrganisation">
+<span class="sig-name descname"><span class="pre">addOrganisation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">org</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BibCollection.BibCollection.addOrganisation" title="Permalink to this definition"></a></dt>
+<dd><p>Add affiliated Organisation object to BibCollection</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>org</strong> (<a class="reference internal" href="#Organisation.Organisation" title="Organisation.Organisation"><em>Organisation</em></a>) – Organisation to add to object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BibCollection.BibCollection.asDataFrame">
+<span class="sig-name descname"><span class="pre">asDataFrame</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BibCollection.BibCollection.asDataFrame" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve BibCollection attributes as dataframe</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>df</strong> – Dataframe containing all attributes of BibCollection object</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BibCollection.BibCollection.checkBibs">
+<span class="sig-name descname"><span class="pre">checkBibs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BibCollection.BibCollection.checkBibs" title="Permalink to this definition"></a></dt>
+<dd><p>Checker for Bibs in BibCollection</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BibCollection.BibCollection.getAllGenders">
+<span class="sig-name descname"><span class="pre">getAllGenders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BibCollection.BibCollection.getAllGenders" title="Permalink to this definition"></a></dt>
+<dd><p>Fetch genders of all co-authors in BibCollection, using database
+to retain user defined co-author genders</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>database</strong> (<a class="reference internal" href="#Organisation.Organisation" title="Organisation.Organisation"><em>Organisation</em></a><em> or </em><em>str</em>) – Database of names and genders, either as an Organisation object or as
+a .csv filepath to an Organisation dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BibCollection.BibCollection.getCRBibs">
+<span class="sig-name descname"><span class="pre">getCRBibs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BibCollection.BibCollection.getCRBibs" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve CrossRef bibs associated with authors in organisation</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BibCollection.BibCollection.getOrganisation">
+<span class="sig-name descname"><span class="pre">getOrganisation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BibCollection.BibCollection.getOrganisation" title="Permalink to this definition"></a></dt>
+<dd><p>Return Organisation object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Organisation object affiliated with BibCollection object</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#Organisation.Organisation" title="Organisation.Organisation">Organisation</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BibCollection.BibCollection.getRecent">
+<span class="sig-name descname"><span class="pre">getRecent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BibCollection.BibCollection.getRecent" title="Permalink to this definition"></a></dt>
+<dd><p>Return all bibs in BibCollection that were published after a certain
+date (given as a datetime object)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dt</strong> (<em>datetime</em>) – Datetime to filter bibs</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>new_bibs</strong> – BibCollection with only recent Bibs</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#BibCollection.BibCollection" title="BibCollection.BibCollection">BibCollection</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BibCollection.BibCollection.getScholarBibs">
+<span class="sig-name descname"><span class="pre">getScholarBibs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BibCollection.BibCollection.getScholarBibs" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve all Scholar bibs associated with authors in organisation</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BibCollection.BibCollection.getScopusBibs">
+<span class="sig-name descname"><span class="pre">getScopusBibs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BibCollection.BibCollection.getScopusBibs" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve all Scopus bibs associated with authors in organisation</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BibCollection.BibCollection.removeAbstracts">
+<span class="sig-name descname"><span class="pre">removeAbstracts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BibCollection.BibCollection.removeAbstracts" title="Permalink to this definition"></a></dt>
+<dd><p>Remove conference abstract bibs from BibCollection based on journal
+title containinng the word “abstract” (case non-specific)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BibCollection.BibCollection.removeBib">
+<span class="sig-name descname"><span class="pre">removeBib</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BibCollection.BibCollection.removeBib" title="Permalink to this definition"></a></dt>
+<dd><p>Remove bib from BibCollection based on index position</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>idx</strong> (<em>int</em>) – Index position of bib to delete</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BibCollection.BibCollection.removeDiscussions">
+<span class="sig-name descname"><span class="pre">removeDiscussions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BibCollection.BibCollection.removeDiscussions" title="Permalink to this definition"></a></dt>
+<dd><p>Remove discussion paper bibs from BibCollection based on journal
+title containinng the word “discussion” (case non-specific)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BibCollection.BibCollection.removeDuplicates">
+<span class="sig-name descname"><span class="pre">removeDuplicates</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BibCollection.BibCollection.removeDuplicates" title="Permalink to this definition"></a></dt>
+<dd><p>Remove duplicate bib objects from BibCollection based on doi and
+title</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BibCollection.BibCollection.removeFromKeyword">
+<span class="sig-name descname"><span class="pre">removeFromKeyword</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bib_att</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyword</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BibCollection.BibCollection.removeFromKeyword" title="Permalink to this definition"></a></dt>
+<dd><p>Remove bibs from BibCollection based on keyword (case non-specific)
+in specified bib attribute journal</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bib_att</strong> (<em>list</em>) – Bib attribute list to base removal on</p></li>
+<li><p><strong>keyword</strong> (<em>str</em>) – Word to classify removal</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="BibCollection.findDuplicates">
+<span class="sig-prename descclassname"><span class="pre">BibCollection.</span></span><span class="sig-name descname"><span class="pre">findDuplicates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BibCollection.findDuplicates" title="Permalink to this definition"></a></dt>
+<dd><p>Find index of duplicates in list, disregarding nan values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>l</strong> (<em>list</em>) – List to find duplicates in</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>idx</strong> – List of duplicate indices</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 
