@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide &mdash; pyBiblyser 2021 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> pyBiblyser
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Guide</a><ul>
+<li><a class="reference internal" href="#name">Name</a></li>
+<li><a class="reference internal" href="#organisation">Organisation</a></li>
+<li><a class="reference internal" href="#bib">Bib</a></li>
+<li><a class="reference internal" href="#bibcollection">BibCollection</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyBiblyser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/guide.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide">
+<h1>Guide<a class="headerlink" href="#guide" title="Permalink to this headline"></a></h1>
+<section id="name">
+<h2>Name<a class="headerlink" href="#name" title="Permalink to this headline"></a></h2>
+<p>The Name object holds attributes about an individual to aid in searching for associated publications. This can be initialised using an individual’s full name, with job title and gender as optional inputs, and additional keyword inputs for Orcid ID, Scopus ID, Google Scholar ID, and h-index.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Name</span> <span class="kn">import</span> <span class="n">Name</span>
+
+<span class="c1"># With fullname string</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">Name</span><span class="p">(</span><span class="s1">&#39;Jane Emily Doe&#39;</span><span class="p">)</span>
+
+<span class="c1"># With first, middle and last name as list</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">Name</span> <span class="p">([</span><span class="s1">&#39;Jane&#39;</span><span class="p">,</span><span class="s1">&#39;Emily&#39;</span><span class="p">,</span><span class="s1">&#39;Doe&#39;</span><span class="p">])</span>
+
+<span class="c1"># With name and additional information</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">Name</span><span class="p">(</span><span class="s1">&#39;Jane Emily Doe&#39;</span><span class="p">,</span> <span class="s1">&#39;Forsker&#39;</span><span class="p">,</span> <span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="n">orcid</span><span class="o">=</span><span class="s1">&#39;0000-0001-2345-6789&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Various name and initial formats are computed from Name object, which maximise the chance of finding all associated publications. The gender of each name can either be provided during initialisatoin, or guessed using <cite>gender_guesser</cite>. The gender definition is used later on to analyse gender distribution in a <strong>BibCollection</strong>.</p>
+</section>
+<section id="organisation">
+<h2>Organisation<a class="headerlink" href="#organisation" title="Permalink to this headline"></a></h2>
+<p>The Organisation object holds a collection of <strong>Name</strong> objects which represent a group of authors, department, or organisation. The GEUS G&amp;K organisation can be fetched either from the GEUS G&amp;K Pure portal (only retrieves registered authors) or from the staff directory webpage (all G&amp;K members). This information is fed directly into an Organisation object.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Organisation</span> <span class="kn">import</span> <span class="n">Organisation</span><span class="p">,</span> <span class="n">fetchWebInfo</span>
+
+<span class="k">def</span> <span class="nf">fetchWebInfo</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">fid</span><span class="p">,</span> <span class="n">classtype</span><span class="p">,</span> <span class="n">classid</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Get all up-to-date information (e.g. names, titles) from a</span>
+<span class="sd">    given webpage element id and class&#39;&#39;&#39;</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">parser</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">fid</span><span class="p">)</span>
+    <span class="n">elements</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">classtype</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="n">classid</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">elements</span>
+
+<span class="c1"># Get names and titles from organisation Pure portal</span>
+<span class="n">URL</span> <span class="o">=</span> <span class="s2">&quot;https://pub.geus.dk/da/organisations/department-of-glaciology-and-climate/persons/&quot;</span>
+<span class="n">info</span> <span class="o">=</span> <span class="n">fetchWebInfo</span><span class="p">(</span><span class="n">URL</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">,</span> <span class="s1">&#39;main-content&#39;</span><span class="p">,</span> <span class="s1">&#39;div&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;rendering rendering_person rendering_short rendering_person_short&#39;</span><span class="p">)</span>
+<span class="n">names</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">titles</span><span class="o">=</span><span class="p">[]</span>
+<span class="p">[</span><span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;&lt;&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">info</span><span class="p">]</span>
+<span class="p">[</span><span class="n">titles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">)[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;&lt;&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;- &#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">info</span><span class="p">]</span>
+
+
+<span class="c1"># Get names and titles from organisation staff page</span>
+<span class="n">URL</span> <span class="o">=</span> <span class="s2">&quot;https://www.geus.dk/om-geus/kontakt/telefonbog?departmentId=Glaciologi+og+Klima&quot;</span>
+<span class="n">names</span> <span class="o">=</span> <span class="n">fetchWebInfo</span><span class="p">(</span><span class="n">URL</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">,</span>  <span class="s1">&#39;gb_ContentPlaceHolderDefault_bottomGrid_ctl03&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;td&#39;</span><span class="p">,</span> <span class="s1">&#39;contact-name&#39;</span><span class="p">)</span>
+<span class="n">titles</span> <span class="o">=</span> <span class="n">fetchWebInfo</span><span class="p">(</span><span class="n">URL</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">fid</span><span class="p">,</span> <span class="n">classtype</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">titles</span> <span class="o">=</span> <span class="n">info</span><span class="p">[:][</span><span class="mi">4</span><span class="p">]</span>
+
+<span class="c1"># Define organisation</span>
+<span class="n">org</span> <span class="o">=</span> <span class="n">Organisation</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">titles</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The Organisation object has a checker, which requires user input to manually edit Name objects - this is especially useful in cases of abnormal surname structures and mis-gendered Names. Once satisfied with the information held in the Organisation object, the Organisation object can be populated with missing information from Scopus and Scholar. The final populated object can either be written out of the object as a DataFrame, or carried forward and used to gather bib information as a <strong>BibCollection</strong>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Organisation checker</span>
+<span class="n">org</span><span class="o">.</span><span class="n">checkNames</span><span class="p">()</span>
+
+<span class="c1"># Populate author info from Scopus and Scholar</span>
+<span class="n">org</span><span class="o">.</span><span class="n">populateOrg</span><span class="p">()</span>
+
+<span class="c1"># Write Organisation attributes to DataFrame</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="n">asDataFrame</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="bib">
+<h2>Bib<a class="headerlink" href="#bib" title="Permalink to this headline"></a></h2>
+<p>A Bib object holds the relevant information associated with a single publication, namely:</p>
+<ul class="simple">
+<li><p>DOI</p></li>
+<li><p>Publication title</p></li>
+<li><p>Authors (held as <strong>Name</strong> objects)</p></li>
+<li><p>Date of publication</p></li>
+<li><p>Journal title</p></li>
+<li><p>Publication type</p></li>
+<li><p>Gender metrics</p></li>
+<li><p>Citation count</p></li>
+<li><p>Altmetric record</p></li>
+</ul>
+<p>A Bib object can either be initiated from a doi string, a title string, or from an author/organisation (as part of a <strong>BibCollection</strong>, see relevant section).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bib</span> <span class="kn">import</span> <span class="n">Bib</span>
+
+<span class="c1"># Bib object from doi string</span>
+<span class="n">pub</span> <span class="o">=</span> <span class="n">Bib</span><span class="p">(</span><span class="n">doi</span><span class="o">=</span><span class="s1">&#39;10.5194/tc-11-2691-2017&#39;</span><span class="p">)</span>
+
+<span class="c1"># Bib object from publication title</span>
+<span class="n">pub</span> <span class="o">=</span> <span class="n">Bib</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;PyTrx: A Python-Based Monoscopic Terrestrial&#39;</span> \
+          <span class="s1">&#39;Photogrammetry Toolset for Glaciology&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Bib attributes are populated using the Scopus API provided by [
+<a class="reference external" href="https://pybliometrics.readthedocs.io/en/stable/">pybliometrics</a>, CrossRef API provided by <a class="reference external" href="https://habanero.readthedocs.io/en/latest/index.html">habanero</a>, and/or the Google Scholar API (<a class="reference external" href="https://scholarly.readthedocs.io/en/stable/quickstart.html">scholarly</a>).</p>
+<p>Authorship of a publication can be queried within the Bib object, including queries by <strong>Organisation</strong> and (guessed) gender.</p>
+</section>
+<section id="bibcollection">
+<h2>BibCollection<a class="headerlink" href="#bibcollection" title="Permalink to this headline"></a></h2>
+<p>A BibCollection object holds a collection of <strong>Bib</strong> objects, i.e. a database of all associated or selected publications. A BibCollection can be initialised from an <strong>Organisation</strong> (for which the BibCollection will search for all publications linked to each name in the organisation), a list of <strong>Bib</strong> objects, or a list of doi strings.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Organisation</span> <span class="kn">import</span> <span class="n">Organisation</span>
+<span class="kn">from</span> <span class="nn">BibCollection</span> <span class="kn">import</span> <span class="n">BibCollection</span>
+
+<span class="c1"># BibCollection from an Organisation</span>
+<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Penelope How&#39;</span><span class="p">,</span> <span class="s1">&#39;Nanna B. Karlsson&#39;</span><span class="p">,</span> <span class="s1">&#39;Kenneth D. Mankoff&#39;</span><span class="p">]</span>
+<span class="n">titles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;AC-medarbejder&#39;</span><span class="p">,</span> <span class="s1">&#39;Seniorforsker&#39;</span><span class="p">,</span> <span class="s1">&#39;Seniorforsker&#39;</span><span class="p">]</span>
+<span class="n">org</span> <span class="o">=</span> <span class="n">Organisation</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">titles</span><span class="p">)</span>
+<span class="n">pubs</span> <span class="o">=</span> <span class="n">BibCollection</span><span class="p">(</span><span class="n">org</span><span class="p">)</span>
+
+<span class="c1"># Search for bibs in selected databases</span>
+<span class="n">bibs</span><span class="o">.</span><span class="n">getScopusBibs</span><span class="p">()</span>                        <span class="c1">#From Scopus (Pure)</span>
+<span class="n">bibs</span><span class="o">.</span><span class="n">getScholarBibs</span><span class="p">()</span>                       <span class="c1">#From Google Scholar</span>
+
+
+<span class="c1"># BibCollection from list of Bib objects</span>
+<span class="n">titles</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PyTrx: A Python-Based Monoscopic Terrestrial Photogrammetry&#39;</span> \
+        <span class="s1">&#39;Toolset for Glaciology&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;A first constraint on basal melt-water production of the&#39;</span> \
+        <span class="s1">&#39;Greenland ice sheet&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Greenland ice sheet mass balance from 1840 through next week&#39;</span><span class="p">]</span>
+<span class="n">bibs</span><span class="o">=</span><span class="p">[]</span>
+<span class="p">[</span><span class="n">bibs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Bib</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">t</span><span class="p">))</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">titles</span><span class="p">]</span>
+<span class="n">pubs</span> <span class="o">=</span> <span class="n">BibCollection</span><span class="p">(</span><span class="n">bibs</span><span class="p">)</span>
+
+
+<span class="c1"># BibCollection from list of doi strings</span>
+<span class="n">dois</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;10.3389/feart.2020.00021&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;10.1038/s41467-021-23739-z&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;10.5194/essd-13-5001-2021&#39;</span><span class="p">]</span>
+<span class="n">pubs</span> <span class="o">=</span> <span class="n">BibCollection</span><span class="p">(</span><span class="n">dois</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Constructing a BibCollection from an <strong>Organisation</strong> can create duplicates due to common authorships, and create false publications due to common names and tags. Duplicates, false matches and unwanted publications (e.g. conference abstracts, discussion papers) can be removed using the filtering functions provided in the BibCollection objects.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remove abstracts and discussion papers</span>
+<span class="n">bibs</span><span class="o">.</span><span class="n">removeAbstracts</span><span class="p">()</span>
+<span class="n">bibs</span><span class="o">.</span><span class="n">removeDiscussions</span><span class="p">()</span>
+
+<span class="c1"># Remove duplicates</span>
+<span class="n">bibs</span><span class="o">.</span><span class="n">removeDuplicates</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>A BibCollection can also be written out of the object as a DataFrame if further inspection is needed</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check bibs</span>
+<span class="n">bibs</span><span class="o">.</span><span class="n">checkBibs</span><span class="p">()</span>
+
+<span class="c1"># Remove duplicates</span>
+<span class="n">bibs</span><span class="o">.</span><span class="n">removeDuplicates</span><span class="p">()</span>
+
+<span class="c1"># Write BibCollection attributes to DataFrame</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">bibs</span><span class="o">.</span><span class="n">asDataFrame</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Genders of each author within the Bib object are firstly guessed, and if the guessed gender is not certian then a gender database is used to check if the author and an associated gender exists. This database is an Organisation object, retaining all information about each author’s name and gender. If a name is not found in the database then the user is prompted to manually define the gender, and then retains this new addition.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="c1"># Set up gender database using pre-existing organisation</span>
+<span class="n">gdb</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">org</span><span class="p">)</span>
+
+<span class="c1"># Guess genders for all co-authors in BibCollection</span>
+<span class="n">bibs</span><span class="o">.</span><span class="n">getAllGenders</span><span class="p">(</span><span class="n">gdb</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Penelope How, Nanna B. Karlsson, Kenneth D. Mankoff.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

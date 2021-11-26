@@ -135,7 +135,7 @@ class Bib(object):
         
     
     def getOrgAuthors(self, organisation):
-        """Return Bib authors within organisation
+        """Return bib authors within organisation
         
         Parameters
         ----------
@@ -145,7 +145,7 @@ class Bib(object):
         Returns
         -------
         org_names : list
-          List of Bib authors that are within Organisation
+          List of bib authors that are within Organisation
         """
         org_names=[]
         if self.authors != None:
@@ -208,7 +208,7 @@ class Bib(object):
                 
         Parameters
         ----------
-        organisation : Organisation       
+        organisation :  :class:`Organisation.Organisation`      
           Organisation object
         
         Returns
@@ -278,7 +278,7 @@ class Bib(object):
             
                             
     def populateBib(self, search):
-        """Populate Bib attributes from search hit
+        """Populate  :class:`Bib.Bib` attributes from search hit
         
         Parameters
         ----------

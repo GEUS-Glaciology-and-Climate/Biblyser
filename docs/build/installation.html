@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installation &mdash; pyBiblyser 2021 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> pyBiblyser
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#quickstart">Quickstart</a></li>
+<li><a class="reference internal" href="#scopus-api-configuration">Scopus API configuration</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyBiblyser</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Installation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h1>
+<section id="quickstart">
+<h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline"></a></h2>
+<p>Clone <a class="reference external" href="https://github.com/GEUS-Glaciology-and-Climate/pyBiblyser">this repository</a> into your local directory</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">GEUS</span><span class="o">-</span><span class="n">Glaciology</span><span class="o">-</span><span class="ow">and</span><span class="o">-</span><span class="n">Climate</span><span class="o">/</span><span class="n">pyBiblyser</span>
+</pre></div>
+</div>
+<p>Create a conda environment with the required package dependencies, either using the environment file provided in the repository.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">env</span> <span class="n">create</span> <span class="o">--</span><span class="n">file</span> <span class="n">environment</span><span class="o">.</span><span class="n">yml</span>
+</pre></div>
+</div>
+<p>Or by installing the packages into your conda environment with pip</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pybyliometrics</span><span class="p">,</span> <span class="n">habanero</span><span class="p">,</span> <span class="n">scholarly</span><span class="p">,</span> <span class="n">gender_guesser</span><span class="p">,</span> <span class="n">pandas</span>
+</pre></div>
+</div>
+</section>
+<section id="scopus-api-configuration">
+<h2>Scopus API configuration<a class="headerlink" href="#scopus-api-configuration" title="Permalink to this headline"></a></h2>
+<p>An API key or Insttoken is needed to use the Scopus API. An API key can be generated through the Elsevier Developer Portal <a class="reference external" href="https://dev.elsevier.com/apikey/manage">here</a>, which can be used to access all authors and publications within your organisation when in your network or through VPN access. If accessing this from within the network is challenging, then an Insttoken can be requested by contacting Elsevier directly.</p>
+<p>Use the configuration functionality in pybliometrics to set up the configuration to the Scopus API</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import pybliometrics (which includes the Scopus API)</span>
+<span class="kn">import</span> <span class="nn">pybliometrics</span>
+
+<span class="c1"># Set up Scopus configuration (only needs to be done once)</span>
+<span class="n">pybliometrics</span><span class="o">.</span><span class="n">scopus</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">create_config</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>See the <a class="reference external" href="https://pybliometrics.readthedocs.io/en/stable/configuration.html">pybliometrics readthedocs</a> for more information on this configuration.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Penelope How, Nanna B. Karlsson, Kenneth D. Mankoff.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

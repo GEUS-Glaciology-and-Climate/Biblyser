@@ -28,7 +28,7 @@ class Organisation(object):
         Parameters
         ----------
         names : list or str               
-          List of str names or Name objects
+          List of str names or :class:`Name.Name` objects
         titles : list, optional
           List of str titles
         genders : list, optional
@@ -161,8 +161,8 @@ class Organisation(object):
         
         Parameters
         ----------
-        n : Name or str or list           
-          Name to add, given as eiter a Name object, fullname string, or 
+        n : :class:`Name.Name` or str or list           
+          Name to add, given as eiter :class:`Name.Name, fullname string, or 
           fullname list [firstname, middlename, lastname]
         t : str, optional 
           Title
