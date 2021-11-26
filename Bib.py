@@ -208,7 +208,7 @@ class Bib(object):
                 
         Parameters
         ----------
-        organisation :  :class:`Organisation.Organisation`      
+        organisation :  Organisation    
           Organisation object
         
         Returns
@@ -278,7 +278,7 @@ class Bib(object):
             
                             
     def populateBib(self, search):
-        """Populate  :class:`Bib.Bib` attributes from search hit
+        """Populate  Bib attributes from search hit
         
         Parameters
         ----------

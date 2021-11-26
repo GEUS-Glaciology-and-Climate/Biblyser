@@ -23,12 +23,12 @@ from Organisation import Organisation, orgFromCSV, checkGender
 #------------------------------------------------------------------------------
 
 class BibCollection(object):
-    """A collection of  :class:`Bib.Bib` objects, representing a database of 
+    """A collection of  Bib objects, representing a database of 
     publications
     
     Attributes
     ----------
-    organisation : :class:`Organisation.Organisation`
+    organisation : Organisation
       Organisation associated with BibCollection
     bibs : list
       List of Bib objects
@@ -39,9 +39,9 @@ class BibCollection(object):
         
         Parameters
         ----------
-        args : :class:`Orgnisation.Organisation` or list
-          An Organisation object or list of :class:`Bib.Bib` or 
-          :class:`Name.Name` objects
+        args : Organisation or list
+          An Organisation object or list of Bib or 
+          Name objects
         """
         print(f'Defining BibCollection object from {type(args)}...')
         
@@ -73,7 +73,7 @@ class BibCollection(object):
         
         Returns
         -------
-        Organisation : :class:`Organisation.Organisation`
+        Organisation : Organisation
           Organisation object affiliated with BibCollection object
         """
         return self.organisation
@@ -84,7 +84,7 @@ class BibCollection(object):
         
         Parameters
         ----------
-        org : :class:`Organisation.Organisation`
+        org : Organisation
           Organisation to add to object
         '''
         self.organisation = org
@@ -94,7 +94,7 @@ class BibCollection(object):
         """Add list of Bib objects to BibCollection object
         
         bibs_list : list
-          List of :class:`Bib.Bib` objects to add to BibCollection object
+          List of Bib objects to add to BibCollection object
         """
         if self.bibs != None:
             [self.bibs.append(b) for b in bibs_list]   
@@ -305,7 +305,7 @@ class BibCollection(object):
         
         Returns
         -------
-        new_bibs : :class:`BibCollection.BibCollection`       
+        new_bibs : BibCollection      
           BibCollection with only recent Bibs
         """
         recent_bibs = []
@@ -331,7 +331,7 @@ class BibCollection(object):
         
         Parameters
         -----------
-        database : :class:`Organisation.Organisation` or str
+        database : Organisation or str
           Database of names and genders, either as an Organisation object or as
           a .csv filepath to an Organisation dataframe
         """
