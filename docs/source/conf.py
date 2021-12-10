@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.abspath('.'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'pyBiblyser'
+project = 'Biblyser'
 copyright = '2021, Penelope How, Nanna B. Karlsson, Kenneth D. Mankoff'
 author = 'Penelope How, Nanna B. Karlsson, Kenneth D. Mankoff'
 

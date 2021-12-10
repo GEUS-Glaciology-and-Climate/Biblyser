@@ -1,16 +1,12 @@
 """
-PyBiblyser (c) is a bibliometric workflow for evaluating the bib metrics of an 
-individual or a group of people (an organisation).
-
-PyBiblyser is licensed under a MIT License.
-
-You should have received a copy of the license along with this work. If not, 
-see <https://choosealicense.com/licenses/mit/>.
+The BibCollection module handles all functionality with a collection of 
+publications associated with an author or group of authors
 """
 
+import copy
 import numpy as np
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 from scholarly import scholarly
 import gender_guesser.detector as gender
 from pybliometrics.scopus import AuthorRetrieval
@@ -143,6 +139,18 @@ class BibCollection(object):
                         a.append(' '.join([asp.split(', ')[1],asp.split(', ')[0]]))
                     d = datetime.strptime(str(s.coverDate), '%Y-%m-%d')
                     
+                    if hasattr(s, 'affilname'):
+                        aff_name = str(s.affilname).split(';')
+                        aff_name = list(set(aff_name))
+                    else:
+                        aff_name = None
+                    
+                    if hasattr(s, 'affiliation_country'):
+                        aff_coun = str(s.affiliation_country).split(';')
+                        aff_coun = list(set(aff_coun))
+                    else:
+                        aff_coun = None
+                    
                     #Construct Bib object
                     bibs.append(Bib(doi=s.doi, 
                                     title=s.title, 
@@ -150,7 +158,9 @@ class BibCollection(object):
                                     journal=s.publicationName, 
                                     ptype=s.aggregationType, 
                                     date=d,
-                                    citations=s.citedby_count))                       
+                                    citations=s.citedby_count,
+                                    aff_institutes=aff_name,
+                                    aff_countries=aff_coun))                       
         #Append Bib objects
         self.addBibs(bibs) 
        
@@ -368,7 +378,51 @@ class BibCollection(object):
                 gens.append(g)        
             b.genders = gens 
                 
+    
+    # def getAllAffiliations(self, database, search='scopus'):
+    #     """Fetch affiliations of all co-authors in BibCollection, using database
+    #     to retain search hits
         
+    #     Parameters
+    #     -----------
+    #     database : Organisation or str
+    #       Database of names and genders, either as an Organisation object or as
+    #       a .csv filepath to an Organisation dataframe
+    #     """
+    #     if isinstance(database, Organisation):
+    #         gdb = database
+    #     elif isinstance(database, str):
+    #         gdb = orgFromCSV(database)
+    #     else:
+    #         TypeError(f'Got database type {type(database)}. ' \
+    #                   'Expecting type Organisation or str')
+        
+    #     #Iterate through Bibs in BibCollection
+    #     for b in self.bibs:
+    #         all_aff = []
+    #         all_co = []
+    #         for author in b.authors:
+                
+    #             #Check affiliation in database
+    #             if author.affiliation==None:
+    #                 aff = checkAffiliation(author, gdb)
+                    
+    #                 if aff==None:
+
+    #                     if search=='scopus':
+    #                         author.populateFromScopus()
+    #                     else:
+    #                         author.populateFromScholar()
+                    
+    #                     gdb.addName(author)
+                    
+    #                 #Append bib affiliations
+    #                 all_aff.append(author.affiliation)
+    #                 all_co.append(author.country)       
+    #         b.affiliations = all_aff
+    #         b.countries = all_co
+               
+            
     def asDataFrame(self):
         """Retrieve BibCollection attributes as dataframe
         
@@ -414,6 +468,16 @@ class BibCollection(object):
                 m=None
                 nb=None
             
+            #Get author affiliations and countries
+            if b.aff_institutes != None:
+                aff = listToStr(b.aff_institutes)
+            else:
+                aff=None
+            if b.aff_countries != None:
+                co = listToStr(b.aff_countries)
+            else:
+                co=None
+            
             #Construct pandas series and append to dataframe
             series = pd.Series({'doi': b.doi, 
                               'title': b.title,
@@ -430,7 +494,9 @@ class BibCollection(object):
                               'last_gender': last,
                               'female_authors': f,
                               'male_authors': m,
-                              'nonbinary_authors': nb})
+                              'nonbinary_authors': nb,
+                              'affiliations': aff,
+                              'countries': co})
             df = df.append(series, ignore_index=True)
         return df
     
@@ -454,3 +520,189 @@ def findDuplicates(l):
     df = df.dropna().loc[df[0].duplicated(keep='first')]
     idx = df.index
     return idx
+
+
+def getGenderDistrib(df):
+    '''Get gender distribution of women, men and non-binary authors as a 
+    percentage. This is derived from the gender count columns from a given
+    dataframe
+    
+    Parameters
+    ----------
+    df : pandas.Dataframe
+      A dataframe representing an exported BibCollection
+    
+    Returns
+    -------
+    f : list
+      List of percentage of female authors for each publication
+    m : list
+      List of percentage of male authors for each publication
+    nb : list
+      List of percentage of non-binary authors for each publication
+    '''
+    f=[]
+    m=[]
+    nb=[]
+    for a,b,c in zip(list(df['female_authors']), list(df['male_authors']),
+                     list(df['nonbinary_authors'])):     
+        f.append((a / sum([a,b,c]))*100)
+        m.append((b / sum([a,b,c]))*100)
+        nb.append((c / sum([a,b,c]))*100)
+    return f, m, nb
+
+
+def firstFromDF(df, first=True):
+    '''Get either Organisation-led (i.e. first author) or co-author publication 
+    entries from dataframe
+    
+    Parameters
+    ----------
+    df : pandas.Dataframe
+      A dataframe representing an exported BibCollection
+    
+    Returns
+    -------
+    df1 : pandas.Dataframe
+      A dataframe of only Organisation-led publication entries
+    '''
+    #Convert column to boolean
+    if isinstance(type(list(df['org_led'])[0]), str):
+        df['org_led'] = df['org_led'].astype('bool')
+        
+    #Get all first author bib entries, or co-author if flag is false
+    return df.loc[df['org_led']==first]       
+      
+
+def countByYear(df):
+    '''Count publications in dataframe by year
+    
+    Parameters
+    ----------
+    df : pandas.Dataframe
+      A dataframe representing an exported BibCollection
+    
+    Returns
+    -------
+    pandas.Dataframe
+      A dataframe of only co-authors publication entries
+    '''
+    if isinstance(list(df['date'])[0], str):
+        df['date'] = pd.to_datetime(df['date'], format='%Y-%m-%d %H:%M:%S')
+    return df['date'].groupby([df['date'].dt.year]).agg({'count'})
+
+
+def calcDivIdx(name, years, scopus=True, scholar=False, crossref=False, 
+                  check=True):
+    '''Determine the diversity index of an individual 
+
+    Parameters
+    ----------
+    name : str
+        Full name of individual to determine diversity index for
+    years : int
+        Number of years (from current date) to determine diversity index from
+    scopus : bool, optional
+        Flag to signify if Scopus database should be used. The default is True
+    scholar : bool, optional
+        Flag to signify if Scholar database should be used. The default is 
+        False
+    crossref : bool, optional
+        Flag to signify if Crossref database should be used. The default is 
+        False
+    check : bool, optional
+        Flag to signify if name and bib results should be checked by users
+    '''
+   
+    #Define organisation
+    n = Organisation([name])
+    
+    #Check all authors in organisation
+    if check:
+        n.checkNames()   
+    
+    #Populate author info from Scopus and Scholar                         
+    n.populateOrg()                          
+        
+    #Construct bib object using organisation
+    bibs = BibCollection(n)                   
+    
+    #Search for bibs in selected databases
+    if scopus:
+        bibs.getScopusBibs()                       #From Scopus (Pure)
+    if scholar:
+        bibs.getScholarBibs()                      #From Google Scholar
+    if crossref:
+        bibs.getCRBibs()                           #From CrossRef
+    
+    #Filter gathered bibs
+    bibs.removeAbstracts()                          #Remove abstracts
+    bibs.removeDiscussions()                        #Remove discussion papers
+    bibs.removeDuplicates()                         #Remove duplicate search hits
+                 
+    #Calculate time range for bib search
+    now = datetime.now()
+    past = now - timedelta(days=years*365)
+    nowstr = now.strftime("%d/%m/%Y")
+    paststr = past.strftime("%d/%m/%Y")
+    print(f'Extracting publications from {paststr} to {nowstr}')
+    
+    #Retrieve bibs within time range         
+    new = bibs.getRecent(past)  
+    
+    #Remove bibs with 1 author or >20 authors
+    idx=[]
+    for i in range(len(new.bibs)):
+        if new.bibs[i].authors != None:
+            if len(new.bibs[i].authors) == 1 or len(new.bibs[i].authors) > 20:
+                idx.append(i)
+    if idx != None:
+        idx.reverse()
+        [new.removeBib(i) for i in idx]
+    
+    #Check bibs
+    if check:
+        new.checkBibs()
+    
+    #Guess genders for all co-authors in BibCollection
+    gdb = copy.copy(n)
+    new.getAllGenders(gdb) 
+    
+    #Get list of genders for each bib
+    genders=[]
+    [genders.append(b.genders) for b in new.bibs] 
+    
+    #Count genders
+    div = []
+    for g in genders:
+        f,m,nb = countGenders(g)
+        
+        #Make ratio of female and non-binary authors to total number of authors
+        ratio = (f+nb) / len(g)
+        div.append(ratio)
+    
+    #Find average, max and min of all bib authorship ratios
+    max_div = max(div)
+    min_div = min(div)
+    ave_div = sum(div) / len(div)      
+       
+    #Calculate country metrics
+    #Get list of author affiliation countries for each bib
+    countries = []
+    for b in new.bibs:
+        if b.aff_countries != None:
+            [countries.append(c) for c in b.aff_countries]
+            
+    #Extract all unique countries
+    unique= list(set(countries))
+    
+    #Return metrics
+    print(f'\n\nNumber of countries you have collaborated with: {len(unique)}' \
+          ' (Based on author affiliations at time of publication)')   
+    print('\nYour gender diversity index is %.1f [0-1]' % ave_div)
+    print('Your maximum diversity index is %.1f' % max_div)
+    print('Your minimum diversity index is %.1f' % min_div)
+    print(f'Your diversity index is based on {len(div)} publications ' \
+          f'between {paststr} and {nowstr}, where 0 denotes a total male ' \
+          'authorship, 1 denotes total non-male authorship, and 0.5 is a ' \
+          'balance')

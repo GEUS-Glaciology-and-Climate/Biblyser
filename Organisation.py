@@ -1,11 +1,6 @@
 """
-PyBiblyser (c) is a bibliometric workflow for evaluating the bib metrics of an 
-individual or a group of people (an organisation).
-
-PyBiblyser is licensed under a MIT License.
-
-You should have received a copy of the license along with this work. If not, 
-see <https://choosealicense.com/licenses/mit/>.
+The Organisation module handles all functionality with a collection of author 
+names
 """
 
 import pandas as pd
@@ -202,6 +197,7 @@ class Organisation(object):
             df = df.append({'full_name': a.fullname,
                             'title': a.title,
                             'guessed_gender': a.getGender(),
+                            # 'affiliation': a.affiliation,
                             'orcid_id': a.orcid,
                             'scholar_id': a.scholarid,
                             'scopus_id': a.scopusid,
@@ -316,6 +312,30 @@ def checkGender(name, organisation):
         if name in all_n:
             gender = n.gender
     return gender
+
+
+def checkAffiliation(name, organisation):
+    """Check if name appears in Organisation and if so, return affiliation
+    
+    Parameters
+    ----------
+    name : str
+      Name to check
+    organisation : Organisation
+      Organisation object to check if name and genderappears in
+    
+    Returns
+    -------
+    aff  : str or None
+      Affiliation of name, or None if name does not appear in Organisation 
+      object
+    """
+    aff=None
+    for n in organisation.names:
+        all_n = n.getAllNameFormats()
+        if name in all_n:
+            aff = n.affiliation
+    return aff
 
 
 def orgFromCSV(csv_file):

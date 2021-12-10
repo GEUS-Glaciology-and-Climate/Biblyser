@@ -1,6 +1,8 @@
-* pyBiblyser
+* Biblyser
 
-*pyBiblyser* is an object-oriented Python workflow for computing and analysing bibliometrics for an individual or organisation (e.g. GEUS G&K).
+[[https://biblyser.readthedocs.io/en/latest/?badge=latest][https://readthedocs.org/projects/biblyser/badge/?version=latest]]
+
+*Biblyser* is an object-oriented Python workflow for computing and analysing bibliometrics for an individual or organisation (e.g. GEUS G&K).
 
 There are four key objects within pyBibAnalyser:
 
@@ -8,8 +10,6 @@ There are four key objects within pyBibAnalyser:
 + *Organisation*, which represents a collection of *Name* objects
 + *Bib*, which hold information about a publication
 + *BibCollection*, which represents a collection of *Bib* objects
-
-![pyBiblyser flow diagram](https://github.com/GEUS-Glaciology-and-Climate/bibliometric_GoK/blob/development/input/bibliometric_workflow.png)
 
 
 ** Quick start
@@ -19,7 +19,7 @@ Clone the development branch of this repository into your local directory
 git clone https://github.com/GEUS-Glaciology-and-Climate/bibliometric_GoK --branch development 
 #+END_SRC
 
-Create a conda environment with the required package dependencies, either using the environment file provided in the repository **this currently contains unnecessary packages for running pyBiblyser, I'll make a clean environment in a later iteration**
+Create a conda environment with the required package dependencies, either using the environment file provided in the repository **this currently contains unnecessary packages for running Biblyser, I'll make a clean environment in a later iteration**
 
 #+BEGIN_SRC bash
 conda env create --file environment.yml

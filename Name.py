@@ -1,11 +1,6 @@
 """
-PyBiblyser (c) is a bibliometric workflow for evaluating the bib metrics of an 
-individual or a group of people (an organisation).
-
-PyBiblyser is licensed under a MIT License.
-
-You should have received a copy of the license along with this work. If not, 
-see <https://choosealicense.com/licenses/mit/>.
+The Name module handles all functionality with an author name, including 
+formatting, gender, and affiliated bib information
 """
 
 import numpy as np
@@ -107,7 +102,8 @@ class Name(object):
         self.hindex_scholar = getKeyValue(kwargs, 'hindex_scholar') 
         self.scopusid = getKeyValue(kwargs, 'scopusid')
         self.scholarid = getKeyValue(kwargs, 'scholarid')
-        self.affiliation = getKeyValue(kwargs, 'affiliation')
+        # self.affiliation = getKeyValue(kwargs, 'affiliation')
+        # self.country = getKeyValue(kwargs, 'country')
   
     
     def populateFromScopus(self):
@@ -125,12 +121,16 @@ class Name(object):
             self.scopusid = author.eid
         except:
             pass
-        try:
-            self.affiliation = author.affiliation_current
-        except:
-            pass
-            
+        # try:
+        #     self.affiliation = author.affiliation_current[0].preferred_name
 
+        # except:
+        #     pass
+        # try:
+        #     self.country = author.affiliation_current[0].country            
+        # except:
+        #     pass
+        
     def populateFromScholar(self):
         """Populate Name attributes using Scholar search"""
         author = fetchScholarAuthor(self.firstname, self.surname)
@@ -141,7 +141,7 @@ class Name(object):
             else:
                 self.hindex_scholar = np.nan   
             self.scholarid = getKeyValue(author, 'scholar_id')
-            self.affiliation = getKeyValue(author, 'affiliation')
+            # self.affiliation = getKeyValue(author, 'affiliation')
         
         
     def getGender(self):

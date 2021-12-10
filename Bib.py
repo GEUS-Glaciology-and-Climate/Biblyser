@@ -1,11 +1,6 @@
 """
-PyBiblyser (c) is a bibliometric workflow for evaluating the bib metrics of an 
-individual or a group of people (an organisation).
-
-PyBiblyser is licensed under a MIT License.
-
-You should have received a copy of the license along with this work. If not, 
-see <https://choosealicense.com/licenses/mit/>.
+The Bib module handles all functionality with a publication, or bib item, such 
+as information retrieval from a bib database and authorship analysis
 """
 
 import requests
@@ -41,6 +36,10 @@ class Bib(object):
       Altmetric score
     genders : list
       List of author genders
+   aff_institutes : list
+      List of author institutes
+   aff_countries : list
+      List of author countries
     """
     
     def __init__(self, **kwargs):
@@ -84,8 +83,10 @@ class Bib(object):
             self.citations = getKeyValue(kwargs, 'citations')
             self.altmetrics = getKeyValue(kwargs, 'altmetrics')
             self.genders = getKeyValue(kwargs, 'genders')
-             
+            self.aff_institutes= getKeyValue(kwargs, 'aff_institutes')
+            self.aff_countries = getKeyValue(kwargs, 'aff_countries')            
         
+
     def getFirstAuthor(self):
         """Return first author"""
         return self.authors[0]       
