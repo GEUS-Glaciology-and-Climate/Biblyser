@@ -1,6 +1,6 @@
 # Biblyser
      
-[![Documentation Status](https://readthedocs.org/projects/biblyser/badge/?version=latest)](https://biblyser.readthedocs.io/en/latest/?badge=latest) [![PyPI Status](https://badge.fury.io/py/pytrx.svg)](https://badge.fury.io/py/pytrx)
+[![Documentation Status](https://readthedocs.org/projects/biblyser/badge/?version=latest)](https://biblyser.readthedocs.io/en/latest/?badge=latest) [![PyPI Status](https://badge.fury.io/py/biblyser.svg)](https://badge.fury.io/py/biblyser)
 
 
 **Biblyser** is an object-oriented Python workflow for computing and analysing bibliometrics for an individual or organisation.
