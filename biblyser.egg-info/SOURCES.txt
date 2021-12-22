@@ -1,0 +1,12 @@
+README.md
+setup.py
+biblyser/__init__.py
+biblyser/bib.py
+biblyser/bibcollection.py
+biblyser/name.py
+biblyser/organisation.py
+biblyser.egg-info/PKG-INFO
+biblyser.egg-info/SOURCES.txt
+biblyser.egg-info/dependency_links.txt
+biblyser.egg-info/requires.txt
+biblyser.egg-info/top_level.txt

@@ -7,7 +7,7 @@ import requests
 from datetime import datetime
 from habanero import Crossref
 from scholarly import scholarly
-from Name import Name, getKeyValue
+from biblyser.name import Name, getKeyValue
 
 #------------------------------------------------------------------------------
 

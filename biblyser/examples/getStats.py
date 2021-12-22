@@ -17,8 +17,8 @@ import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
 from matplotlib.ticker import StrMethodFormatter
 
-sys.path.append('../')
-from BibCollection import getGenderDistrib, countByYear
+#sys.path.append('../')
+from biblyser.bibcollection import getGenderDistrib, countByYear
 
     
 #Import organisation from csv
@@ -173,8 +173,8 @@ ax1.text(1, 15.8, 'Summary statistics', fontsize=lfont1)
 #Plot and save
 plt.rcParams["font.family"] = fontname
 plt.savefig('output/publication_stats.jpg', dpi=300)
-# plt.show()
-plt.close()
+plt.show()
+# plt.close()
 
 #------------   Publication lead and co-authorship by gender   ----------------
 
@@ -304,7 +304,8 @@ ax2xtwin.yaxis.set_label_coords(1.08, 0)
 plt.rcParams["font.family"] = fontname
 plt.tight_layout()
 plt.savefig('output/publication_genders.jpg', dpi=300)   
-plt.show()    
+plt.show()  
+# plt.close()  
 
 
 #----------  % female/male authorship in organisation-led papers   ------------
@@ -340,9 +341,6 @@ ax1.bar(list(range(0, (len(bin10)-1)*10, 10)), h1, width=10,
         color=cold[0], edgecolor='white')
 ax3.bar(list(range(0, (len(bin10)-1)*10, 10)), h2, width=10, 
         color=warm[0], edgecolor='white')
-
-# ax1.hist(fauthors, bins=bin10, color=cold[0], edgecolor='white')
-# ax3.hist(mauthors, bins=bin10, color=warm[0], edgecolor='white')
 
 ax1.axvline(sum(fauthors)/len(fauthors), linewidth=2, color=cold[1])
 ax3.axvline(sum(mauthors)/len(mauthors), linewidth=2, color=warm[-1])
@@ -417,8 +415,8 @@ fig1.patches.extend([rect1])
 
 #Plot and save
 plt.savefig('output/authorship_genders.jpg', dpi=300)
-# plt.show()
-plt.close()
+plt.show()
+# plt.close()
 
 
 #------------   Gender % when 1st/last author is male or female   -------------
@@ -508,8 +506,8 @@ for ax in [ax1,ax2]:
 #Plot and save
 plt.rcParams["font.family"] = fontname
 plt.savefig('output/authorship_lead_last.jpg', dpi=300)
-# plt.show()
-plt.close()
+plt.show()
+# plt.close()
      
 
 #------------------------------------------------------------------------------

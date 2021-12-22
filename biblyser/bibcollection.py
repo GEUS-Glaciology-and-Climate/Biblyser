@@ -11,10 +11,10 @@ from scholarly import scholarly
 import gender_guesser.detector as gender
 from pybliometrics.scopus import AuthorRetrieval
 
-from Name import Name, guessGender, defineGender
-from Bib import Bib, fromCrossRef, fromScholar, fromScopus, countGenders, \
+from biblyser.name import Name, guessGender, defineGender
+from biblyser.bib import Bib, fromCrossRef, fromScholar, fromScopus, countGenders, \
     listToStr
-from Organisation import Organisation, orgFromCSV, checkGender
+from biblyser.organisation import Organisation, orgFromCSV, checkGender
 
 #------------------------------------------------------------------------------
 

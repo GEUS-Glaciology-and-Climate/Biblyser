@@ -9,8 +9,8 @@ see <https://choosealicense.com/licenses/mit/>.
 """
 
 import sys, argparse
-sys.path.append('../')
-from BibCollection import calcDivIdx
+#sys.path.append('../')
+from biblyser.bibcollection import calcDivIdx
 
 #------------------   Activate parser and parser arguments   ------------------
 

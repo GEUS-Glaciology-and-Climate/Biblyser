@@ -11,10 +11,10 @@ see <https://choosealicense.com/licenses/mit/>.
 #import pyBibAnalyser classes and functions
 from bs4 import BeautifulSoup
 import requests, sys
-sys.path.append('../')
+#sys.path.append('../')
 
-from Organisation import Organisation, orgFromCSV
-from BibCollection import BibCollection
+from biblyser.organisation import Organisation, orgFromCSV
+from biblyser.bibcollection import BibCollection
 
 # # Set up Scopus configuration (only needs to be done once)
 # import pybliometrics
@@ -57,7 +57,7 @@ titles=[]
 
 #Define organisation
 # org = Organisation(names, titles)                            #All in GEUS G&K
-org = Organisation(names, titles)                              #A single person
+org = Organisation(names[7:8], titles[7:8])                              #A single person
 
 #Check all authors in organisation
 org.checkNames()   

@@ -1,0 +1,6 @@
+gender-guesser
+habanero
+numpy
+pandas
+pybliometrics
+scholarly

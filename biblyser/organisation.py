@@ -4,7 +4,7 @@ names
 """
 
 import pandas as pd
-from Name import Name, getKeyValue
+from biblyser.name import Name, getKeyValue
 
 #------------------------------------------------------------------------------    
 

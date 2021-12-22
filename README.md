@@ -1,0 +1,219 @@
+# Biblyser
+     
+[![Documentation Status](https://readthedocs.org/projects/biblyser/badge/?version=latest)](https://biblyser.readthedocs.io/en/latest/?badge=latest)
+
+**Biblyser** is an object-oriented Python workflow for computing and analysing bibliometrics for an individual or organisation.
+
+There are four key objects within Biblyser:
+
++ **Name**, which holds information about an individual author
++ **Organisation**, which represents a collection of **Name** objects
++ **Bib**, which hold information about a publication
++ **BibCollection**, which represents a collection of **Bib** objects
+
+
+## Quick start
+Biblyser can either be installed with pip or clones from the Github repository.
+
+```python
+pip install biblyser
+```
+
+```python
+git clone https://github.com/GEUS-Glaciology-and-Climate/Biblyser 
+```
+
+When cloning from the Github repository, you will need to create a conda environment with the required package dependencies by installing the Biblyser's dependencies using pip.
+
+```python
+pip install pybyliometrics, habanero, scholarly, gender_guesser, pandas, beautifulsoup4
+```
+
+Try running one of the example scripts from the repository to see that it works. To access the Scopus API through the pybliometrics package, you will need to configure your API key.
+
+```python
+# Set up Scopus configuration (only needs to be done once)
+import pybliometrics
+pybliometrics.scopus.utils.create_config()
+```
+
+An API key or Insttoken is needed to use the Scopus API. An API key can be generated through the Elsevier Developer Portal [here](https://dev.elsevier.com/apikey/manage), which can be used to access all authors and publications within your organisation when in your network or through VPN access. If accessing this from within the network is challenging, then an Insttoken can be requested by contacting Elsevier directly. 
+
+After this initial set-up, no editing of the example scripts should be needed - the scripts should run as they are. If they don't, there is likely an issue with your python environment.
+
+
+## Name.py
+The Name object holds attributes about an individual to aid in searching for associated publications. This can be initialised using an individual's full name, with job title and gender as optional inputs, and additional keyword inputs for Orcid ID, Scopus ID, Google Scholar ID, and h-index. 
+
+```python
+from biblyser.name import Name
+
+n = Name('Jane Emily Doe') 		#With fullname string
+n = Name (['Jane','Emily','Doe']) 	#With first, middle and last name as list
+
+n = Name('Jane Emily Doe', 	
+	 'Forsker',
+	 'female',
+	 orcid='0000-0001-2345-6789')  #With additional information
+```
+
+Various name and initial formats are computed from Name object, which maximise the chance of finding all associated publications. The gender of each name can either be provided during initialisatoin, or guessed using `gender_guesser`. The gender definition is used later on to analyse gender distribution in a **BibCollection**.
+
+
+## Organisation.py
+The Organisation object holds a collection of **Name** objects which represent a group of authors, department, or organisation. The GEUS G&K organisation can be fetched either from the GEUS G&K Pure portal (only retrieves registered authors) or from the staff directory webpage (all G&K members). This information is fed directly into an Organisation object.
+
+```python
+from biblyser.organisation import Organisation, fetchWebInfo
+from bs4 import BeautifulSoup
+
+def fetchWebInfo(url, parser, fid, classtype, classid):
+    '''Get all up-to-date information (e.g. names, titles) from a given webpage
+    element id and class'''
+    page = requests.get(url)
+    soup = BeautifulSoup(page.content, parser)
+    results = soup.find(id=fid)
+    elements = results.find_all(classtype, class_=classid)
+    return elements
+    
+#Get names and titles from GEUS Pure webpage
+URL = "https://pub.geus.dk/da/organisations/department-of-glaciology-and-climate/persons/"
+info = fetchWebInfo(URL, 'html.parser', 'main-content', 'div', 
+                    'rendering rendering_person rendering_short rendering_person_short')
+names=[]
+titles=[]
+[names.append(str(e).split('span')[1].split('<')[0].split('>')[1]) for e in info]
+[titles.append(str(e).split('span')[5].split('<')[0].split('- ')[1]) for e in info]
+
+
+#Get names and titles from GEUS staff webpage
+URL = "https://www.geus.dk/om-geus/kontakt/telefonbog?departmentId=Glaciologi+og+Klima"
+names = fetchWebInfo(URL, 'html.parser', 'gb_ContentPlaceHolderDefault_bottomGrid_ctl03', 
+                     'td', 'contact-name')
+titles = fetchWebInfo(URL, parser, fid, classtype, None)
+titles = info[:][4]
+
+#Define organisation
+org = Organisation(names, titles)               
+```
+
+The Organisation object has a checker, which requires user input to manually edit Name objects - this is especially useful in cases of abnormal surname structures and mis-gendered Names. Once satisfied with the information held in the Organisation object, the Organisation object can be populated with missing information from Scopus and Scholar. The final populated object can either be written out of the object as a DataFrame, or carried forward and used to gather bib information as a **BibCollection**.
+
+```python
+#Organisation checker
+org.checkNames()
+
+#Populate author info from Scopus and Scholar                         
+org.populateOrg()
+
+#Write Organisation attributes to DataFrame
+df = org.asDataFrame()
+```
+
+
+## Bib.py
+A Bib object holds the relevant information associated with a single publication, namely:
+
++ DOI
++ Publication title
++ Authors (held as **Name** objects)
++ Date of publication
++ Journal title
++ Publication type
++ Gender metrics 
++ Citation count
++ Altmetric record
+
+A Bib object can either be initiated from a doi string, a title string, or from an author/organisation (as part of a **BibCollection**, see relevant section).
+
+```python
+from biblyser.bib import Bib
+
+#Bib object from doi string
+pub = Bib(doi='10.5194/tc-11-2691-2017') 		
+
+#Bib object from publication title
+pub = Bib(title='PyTrx: A Python-Based Monoscopic Terrestrial Photogrammetry Toolset for Glaciology')
+```
+
+Bib attributes are populated using the Scopus API provided by [pybliometrics](https://pybliometrics.readthedocs.io/en/stable/), CrossRef API provided by [habanero](https://habanero.readthedocs.io/en/latest/index.html), and/or the Google Scholar API [scholarly](https://scholarly.readthedocs.io/en/stable/quickstart.html).
+
+Authorship of a publication can be queried within the Bib object, including queries by organisation and (guessed) gender.
+
+
+## BibCollection.py
+A BibCollection object holds a collection of **Bib** objects, i.e. a database of all associated or selected publications. A BibCollection can be initialised from an **Organisation** (for which the BibCollection will search for all publications linked to each name in the organisation), a list of **Bib** objects, or a list of doi strings.
+
+```python
+from biblyser.organisation import Organisation
+from biblyser.bibCollection import BibCollection
+
+
+#BibCollection from an Organisation
+names = ['Penelope How', 'Kristin Schild']
+titles = ['AC-medarbejder', 'Forsker']
+org = Organisation(names, titles)
+pubs = BibCollection(org)
+
+#Search for bibs in selected databases
+bibs.getScholarBibs()                           #From Google Scholar
+bibs.getScopusBibs()                            #From Scopus (Pure)
+
+
+#BibCollection from list of Bib objects
+titles=['PyTrx: A Python-Based Monoscopic Terrestrial Photogrammetry Toolset for Glaciology',
+	'Glacier calving rates due to subglacial discharge, fjord circulation, and free convection']
+bibs=[]
+[bibs.append(Bib(title=t)) for t in titles]
+pubs = BibCollection(bibs)
+
+
+#BibCollection from list of doi strings
+dois = ['10.3389/feart.2020.00021', '10.1029/2017JF004520']
+pubs = BibCollection(dois)
+```
+
+Constructing a BibCollection from an **Organisation** can create duplicates due to common authorships, and create false publications due to common names and tags. Duplicates, false matches and unwanted publications (e.g. conference abstracts, discussion papers) can be removed using the filtering functions provided in the BibCollection objects. 
+
+```python
+#Remove abstracts and discussion papers
+bibs.removeAbstracts()                          
+bibs.removeDiscussions()                       
+
+#Remove duplicates
+bibs.removeDuplicates()                         
+```
+
+A BibCollection can also be written out of the object as a DataFrame if further inspection is needed
+
+```python
+#Check bibs
+bibs.checkBibs()
+
+#Remove duplicates
+bibs.removeDuplicates()
+
+#Write BibCollection attributes to DataFrame
+df = bibs.asDataFrame()
+```
+
+## Computing gender metrics
+Genders of each author within the Bib object are firstly guessed, and if the guessed gender is not certian then a gender database is used to check if the author and an associated gender exists. This database is an Organisation object, retaining all information about each author's name and gender. If a name is not found in the database then the user is prompted to manually define the gender, and then retains this new addition. 
+
+```python
+import copy
+
+#Set up gender database using pre-existing organisation
+gdb = copy.copy(org)
+
+#Guess genders for all co-authors in BibCollection
+bibs.getAllGenders(gdb)
+```
+
+## Further development we are working on
++ Incorporation of other search APIs for publications, such as [Web Of Science](https://pypi.org/project/wos/)
++ Fetch journal impact factor
++ Add "time from PhD" attribute to Name object
++ Incorporate abstracts to Bib objects and enable keyword searches
+
+And contributions are welcome!
