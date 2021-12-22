@@ -4,11 +4,11 @@ Installation
 Quickstart
 ----------
 
-Clone `this repository <https://github.com/GEUS-Glaciology-and-Climate/pyBiblyser>`_ into your local directory
+Clone `this repository <https://github.com/GEUS-Glaciology-and-Climate/Biblyser>`_ into your local directory
 
 .. code-block:: python
 
-   git clone https://github.com/GEUS-Glaciology-and-Climate/pyBiblyser
+   git clone https://github.com/GEUS-Glaciology-and-Climate/Biblyser
 
 Create a conda environment with the required package dependencies, either using the environment file provided in the repository.
 

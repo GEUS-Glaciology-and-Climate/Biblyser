@@ -4,7 +4,7 @@ Modules
 Name
 ----
 
-.. automodule:: Name
+.. automodule:: name
    :members:
    :undoc-members:
    :show-inheritance:
@@ -13,7 +13,7 @@ Name
 Organisation
 ------------
 
-.. automodule:: Organisation
+.. automodule:: organisation
    :members:
    :undoc-members:
    :show-inheritance:
@@ -22,7 +22,7 @@ Organisation
 Bib
 ---
 
-.. automodule:: Bib
+.. automodule:: bib
    :members:
    :undoc-members:
    :show-inheritance:
@@ -31,7 +31,7 @@ Bib
 BibCollection
 -------------
 
-.. automodule:: BibCollection
+.. automodule:: bibcollection
    :members:
    :undoc-members:
    :show-inheritance:
