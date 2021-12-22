@@ -230,7 +230,7 @@ class BibCollection(object):
         
         #Delete all bibs based on retained indices
         if idx != None:
-            idx.reverse()
+            idx.sort(reverse=True)
             [self.removeBib(i) for i in idx]
             
 
@@ -298,9 +298,9 @@ class BibCollection(object):
         i2 = findDuplicates(titles)
         
         #Merge indices and remove bibs
-        idx = list(set(np.concatenate((i1, i2)).tolist()))                
+        idx = list(set(np.concatenate((i1, i2)).tolist()))               
         if idx != None:
-            idx.reverse()
+            idx.sort(reverse=True)
             [self.removeBib(i) for i in idx]
             
 
@@ -378,50 +378,6 @@ class BibCollection(object):
                 gens.append(g)        
             b.genders = gens 
                 
-    
-    # def getAllAffiliations(self, database, search='scopus'):
-    #     """Fetch affiliations of all co-authors in BibCollection, using database
-    #     to retain search hits
-        
-    #     Parameters
-    #     -----------
-    #     database : Organisation or str
-    #       Database of names and genders, either as an Organisation object or as
-    #       a .csv filepath to an Organisation dataframe
-    #     """
-    #     if isinstance(database, Organisation):
-    #         gdb = database
-    #     elif isinstance(database, str):
-    #         gdb = orgFromCSV(database)
-    #     else:
-    #         TypeError(f'Got database type {type(database)}. ' \
-    #                   'Expecting type Organisation or str')
-        
-    #     #Iterate through Bibs in BibCollection
-    #     for b in self.bibs:
-    #         all_aff = []
-    #         all_co = []
-    #         for author in b.authors:
-                
-    #             #Check affiliation in database
-    #             if author.affiliation==None:
-    #                 aff = checkAffiliation(author, gdb)
-                    
-    #                 if aff==None:
-
-    #                     if search=='scopus':
-    #                         author.populateFromScopus()
-    #                     else:
-    #                         author.populateFromScholar()
-                    
-    #                     gdb.addName(author)
-                    
-    #                 #Append bib affiliations
-    #                 all_aff.append(author.affiliation)
-    #                 all_co.append(author.country)       
-    #         b.affiliations = all_aff
-    #         b.countries = all_co
-               
             
     def asDataFrame(self):
         """Retrieve BibCollection attributes as dataframe
@@ -444,10 +400,13 @@ class BibCollection(object):
                 [org_authors.append(author.fullname) for author in oa]
                 org_authors = listToStr(org_authors)
                 org_first = str(b.checkOrgFirstAuthor(self.organisation))
+                org_gen = b.getOrgGender(oa)
+                org_gen = listToStr(org_gen)
             else:
                 author_str = None
                 org_authors = None
                 org_first = None
+                org_gen = None
           
             #Get authors genders
             genders = b.genders
@@ -490,6 +449,7 @@ class BibCollection(object):
                               'org_led': org_first,
                               'org_authors': org_authors,
                               'genders': genders_str,
+                              'org_genders': org_gen,
                               'first_gender': first,
                               'last_gender': last,
                               'female_authors': f,
@@ -522,7 +482,40 @@ def findDuplicates(l):
     return idx
 
 
-def getGenderDistrib(df):
+def bibsFromCSV(csv_file):
+    """Import BibCollection from csv file
+    
+    Parameters
+    ----------
+    csv_file : str
+      Filepath to csv bibcollection
+      
+    Returns
+    -------
+    bibs : BibCollection
+      BibCollection object
+    """
+    bibs=[]
+    
+    #Read each row of CSV database
+    database = pd.read_csv(csv_file)
+    for i, r in database.iterrows():
+        
+        #Construct Bib object for each row
+        bibs.append(Bib(doi=r['doi'], title=r['title'], 
+                    authors=str(r['authors']).split(', '), ptype=r['type'], 
+                    date=r['date'], journal=r['journal'], 
+                    citations=r['citations'], altmetrics=r['altmetric'],
+                    genders=str(r['genders']).split(', '),  
+                    aff_institutes=str(r['affiliations']).split(', '), 
+                    aff_countries=str(r['countries']).split(', ')))
+    
+    #Input list of Bib objects into BibCollection                
+    bibs = BibCollection(bibs)
+    return bibs
+
+
+def getGenderDistrib(df, first=True):
     '''Get gender distribution of women, men and non-binary authors as a 
     percentage. This is derived from the gender count columns from a given
     dataframe
@@ -531,6 +524,8 @@ def getGenderDistrib(df):
     ----------
     df : pandas.Dataframe
       A dataframe representing an exported BibCollection
+    first : bool
+      Flag to denote if first author gender should be included or not
     
     Returns
     -------
@@ -544,11 +539,24 @@ def getGenderDistrib(df):
     f=[]
     m=[]
     nb=[]
-    for a,b,c in zip(list(df['female_authors']), list(df['male_authors']),
-                     list(df['nonbinary_authors'])):     
-        f.append((a / sum([a,b,c]))*100)
-        m.append((b / sum([a,b,c]))*100)
-        nb.append((c / sum([a,b,c]))*100)
+    
+    #Iterate through authorship gender list
+    for g in list(df['genders']): 
+        genders = g.split(', ')
+        
+        #Count authorship genders
+        if first==True:
+            female, male, nonbin = countGenders(genders)
+            total=len(genders)
+        else:
+            female, male, nonbin = countGenders(genders[1:])
+            total=len(genders)-1
+            
+        #Append if authorship list is more than 0
+        if total > 0:
+            f.append((female/total)*100)
+            m.append((male/total)*100)
+            nb.append((nonbin/total)*100)                         
     return f, m, nb
 
 
@@ -560,6 +568,9 @@ def firstFromDF(df, first=True):
     ----------
     df : pandas.Dataframe
       A dataframe representing an exported BibCollection
+    first : bool
+      Flag to denote if first author or co-author publications should be 
+      retrieved
     
     Returns
     -------
@@ -657,7 +668,7 @@ def calcDivIdx(name, years, scopus=True, scholar=False, crossref=False,
             if len(new.bibs[i].authors) == 1 or len(new.bibs[i].authors) > 20:
                 idx.append(i)
     if idx != None:
-        idx.reverse()
+        idx.sort(reverse=True)
         [new.removeBib(i) for i in idx]
     
     #Check bibs

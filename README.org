@@ -1,10 +1,11 @@
 * Biblyser
 
 [[https://biblyser.readthedocs.io/en/latest/?badge=latest][https://readthedocs.org/projects/biblyser/badge/?version=latest]]
+      
 
 *Biblyser* is an object-oriented Python workflow for computing and analysing bibliometrics for an individual or organisation (e.g. GEUS G&K).
 
-There are four key objects within pyBibAnalyser:
+There are four key objects within Biblyser:
 
 + *Name*, which holds information about an individual author
 + *Organisation*, which represents a collection of *Name* objects
