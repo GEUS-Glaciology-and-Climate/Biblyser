@@ -14,7 +14,7 @@ There are four key objects within Biblyser:
 
 
 ## Quick start
-Biblyser can either be installed with pip or clones from the Github repository.
+Biblyser can either be installed with pip or cloned from the Github repository.
 
 ```python
 pip install biblyser
@@ -27,7 +27,7 @@ git clone https://github.com/GEUS-Glaciology-and-Climate/Biblyser
 When cloning from the Github repository, you will need to create a conda environment with the required package dependencies by installing the Biblyser's dependencies using pip.
 
 ```python
-pip install pybyliometrics, habanero, scholarly, gender_guesser, pandas, beautifulsoup4
+pip install pybyliometrics, habanero, scholarly, gender_guesser, pandas, numpy
 ```
 
 Try running one of the example scripts from the repository to see that it works. To access the Scopus API through the pybliometrics package, you will need to configure your API key.
@@ -43,7 +43,7 @@ An API key or Insttoken is needed to use the Scopus API. An API key can be gener
 After this initial set-up, no editing of the example scripts should be needed - the scripts should run as they are. If they don't, there is likely an issue with your python environment.
 
 
-## Name.py
+## name.py
 The Name object holds attributes about an individual to aid in searching for associated publications. This can be initialised using an individual's full name, with job title and gender as optional inputs, and additional keyword inputs for Orcid ID, Scopus ID, Google Scholar ID, and h-index. 
 
 ```python
@@ -61,7 +61,7 @@ n = Name('Jane Emily Doe',
 Various name and initial formats are computed from Name object, which maximise the chance of finding all associated publications. The gender of each name can either be provided during initialisatoin, or guessed using `gender_guesser`. The gender definition is used later on to analyse gender distribution in a **BibCollection**.
 
 
-## Organisation.py
+## organisation.py
 The Organisation object holds a collection of **Name** objects which represent a group of authors, department, or organisation. The GEUS G&K organisation can be fetched either from the GEUS G&K Pure portal (only retrieves registered authors) or from the staff directory webpage (all G&K members). This information is fed directly into an Organisation object.
 
 ```python
@@ -112,7 +112,7 @@ df = org.asDataFrame()
 ```
 
 
-## Bib.py
+## bib.py
 A Bib object holds the relevant information associated with a single publication, namely:
 
 + DOI
@@ -142,12 +142,12 @@ Bib attributes are populated using the Scopus API provided by [pybliometrics](ht
 Authorship of a publication can be queried within the Bib object, including queries by organisation and (guessed) gender.
 
 
-## BibCollection.py
+## bibcollection.py
 A BibCollection object holds a collection of **Bib** objects, i.e. a database of all associated or selected publications. A BibCollection can be initialised from an **Organisation** (for which the BibCollection will search for all publications linked to each name in the organisation), a list of **Bib** objects, or a list of doi strings.
 
 ```python
 from biblyser.organisation import Organisation
-from biblyser.bibCollection import BibCollection
+from biblyser.bibcollection import BibCollection
 
 
 #BibCollection from an Organisation
@@ -199,7 +199,7 @@ df = bibs.asDataFrame()
 ```
 
 ## Computing gender metrics
-Genders of each author within the Bib object are firstly guessed, and if the guessed gender is not certian then a gender database is used to check if the author and an associated gender exists. This database is an Organisation object, retaining all information about each author's name and gender. If a name is not found in the database then the user is prompted to manually define the gender, and then retains this new addition. 
+Genders of each author within the Bib object are firstly guessed, and if the guessed gender is not certian then a gender database is used to check if the author and an associated gender exists. This database is an **Organisation** object, retaining all information about each author's name and gender. If a name is not found in the database then the user is prompted to manually define the gender, and then retains this new addition. 
 
 ```python
 import copy
@@ -209,6 +209,25 @@ gdb = copy.copy(org)
 
 #Guess genders for all co-authors in BibCollection
 bibs.getAllGenders(gdb)
+```
+
+The computed gender metrics can be used to determine a diversity index for an individual or organisation. This diversity index is based on the gender and affiliation/country composition in all publication authorships. Generally, this is determined from publications in the last five years, but can be changed as an optional parameter. 
+
+```python
+from biblyser.bibcollection import calcDivIdx
+
+calcDivIdx('Penelope How',     #Name
+	    5,                 #Years to calculate
+	    scopus=True,       #Bibs from scopus
+	    scholar=False,     #from scholar
+	    crossref=False,    #from crossref
+            check=True)        #User check bibs?
+```
+
+An example script for calculating diveristy index is available in the Github repository [here](https://github.com/GEUS-Glaciology-and-Climate/Biblyser/blob/main/biblyser/examples/getDiv.py), which can be run from the command line. 
+
+```python
+python getDiv calcDivIdx --name "Penelope How"
 ```
 
 ## Further development we are working on

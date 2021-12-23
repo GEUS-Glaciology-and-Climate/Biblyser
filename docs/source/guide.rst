@@ -8,7 +8,7 @@ The Name object holds attributes about an individual to aid in searching for ass
    
 .. code-block:: python
 
-   from Name import Name
+   from biblyser.name import Name
 	
    # With fullname string
    n = Name('Jane Emily Doe')
@@ -29,7 +29,7 @@ The Organisation object holds a collection of **Name** objects which represent a
 
 .. code-block:: python
 
-   from Organisation import Organisation, fetchWebInfo
+   from biblyser.organisation import Organisation, fetchWebInfo
 
    def fetchWebInfo(url, parser, fid, classtype, classid):
        '''Get all up-to-date information (e.g. names, titles) from a 
@@ -92,7 +92,7 @@ A Bib object can either be initiated from a doi string, a title string, or from 
 
 .. code-block:: python
 
-   from Bib import Bib
+   from biblyser.bib import Bib
 
    # Bib object from doi string
    pub = Bib(doi='10.5194/tc-11-2691-2017') 		
@@ -114,8 +114,8 @@ A BibCollection object holds a collection of **Bib** objects, i.e. a database of
 
 .. code-block:: python
 
-   from Organisation import Organisation
-   from BibCollection import BibCollection
+   from biblyser.organisation import Organisation
+   from biblyser.bibcollection import BibCollection
 
    # BibCollection from an Organisation
    names = ['Penelope How', 'Nanna B. Karlsson', 'Kenneth D. Mankoff']

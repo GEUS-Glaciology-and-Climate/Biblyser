@@ -29,8 +29,8 @@ setuptools.setup(
         "Bug Tracker": "https://github.com/GEUS-Glaciology-and-Climate/Biblyser/issues",
     },
     keywords="publications citations academia science bibliometrics",
-#    package_dir={"": "Biblyser"},
-#    packages=setuptools.find_packages(where="Biblyser"),
+#    package_dir={"": "biblyser"},
+    #packages=setuptools.find_packages(where="biblyser"),
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",

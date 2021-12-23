@@ -4,24 +4,21 @@ Installation
 Quickstart
 ----------
 
-Clone `this repository <https://github.com/GEUS-Glaciology-and-Climate/Biblyser>`_ into your local directory
+Biblyser can either be installed with pip or cloned from `this repository <https://github.com/GEUS-Glaciology-and-Climate/Biblyser>`_ into your local directory.
+
+.. code-block:: python
+
+   pip install biblyser
 
 .. code-block:: python
 
    git clone https://github.com/GEUS-Glaciology-and-Climate/Biblyser
 
-Create a conda environment with the required package dependencies, either using the environment file provided in the repository.
+When cloning the repository, you will need to create a python environment with the required package dependencies, which can be installed with pip. either using the environment file provided in the repository.
 
 .. code-block:: python
 
-   conda env create --file environment.yml
-
-
-Or by installing the packages into your conda environment with pip
-
-.. code-block:: python
-
-   pip install pybyliometrics, habanero, scholarly, gender_guesser, pandas
+   pip install pybyliometrics, habanero, scholarly, gender_guesser, pandas, numpy
 
 
 Scopus API configuration

@@ -6,6 +6,8 @@
 Biblyser
 ==========
 
+**Biblyser** is an object-oriented Python workflow for computing and analysing bibliometrics for an individual or organisation.
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:

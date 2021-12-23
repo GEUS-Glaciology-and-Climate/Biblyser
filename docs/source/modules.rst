@@ -1,7 +1,7 @@
 Modules
 =======
 
-Name
+name
 ----
 
 .. automodule:: name
@@ -10,7 +10,7 @@ Name
    :show-inheritance:
 
 
-Organisation
+organisation
 ------------
 
 .. automodule:: organisation
@@ -19,7 +19,7 @@ Organisation
    :show-inheritance:
 
 
-Bib
+bib
 ---
 
 .. automodule:: bib
@@ -28,7 +28,7 @@ Bib
    :show-inheritance:
 
 
-BibCollection
+bibcollection
 -------------
 
 .. automodule:: bibcollection
